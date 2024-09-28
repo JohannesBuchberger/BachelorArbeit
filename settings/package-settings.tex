@@ -1,0 +1,117 @@
+% ==================================================================
+% ============= Packages & Einstellungen ===========================
+% ==================================================================
+
+% ============= Bilder und Bildordnerpfad ==========================
+\usepackage{graphicx, subfig}
+\graphicspath{ {./img/} }
+
+% ============= Dokumentinformationen ==============================
+\usepackage[left= 3 cm,right = 3 cm, top = 3 cm, bottom = 3 cm]{geometry}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[utf8]{inputenc} % UTF-8 Encoding 
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc} % Letter encoding
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{lmodern} % Schriftart "latex modern"
+\usepackage{color} % Farben
+\usepackage{eurosym} % euro symbols
+
+% ============= Links ==============================================
+\usepackage[
+    pdftitle={Empfehlungssysteme},
+    pdfsubject={},
+    pdfauthor={Johannes Buchberger},
+    pdfkeywords={}, 
+    %Links nicht einrahmen
+    hidelinks
+]{hyperref}  % hyperlinks in tableofcontents etc 
+
+\usepackage{nameref}
+
+% ============= mathe stuff ========================================
+% zusätzliche Schriftzeichen der American Mathematical Society
+\usepackage{mathtools} % mathe tools
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage[ngerman]{cleveref}
+
+%nicht einrücken nach Absatz
+\setlength{\parindent}{0pt}
+\usepackage{booktabs}
+
+\usepackage{blindtext}
+\usepackage{pdfpages}
+
+% ============= bibtex configs =====================================
+\usepackage[backend=biber, style=authoryear, sorting=none]{biblatex}
+\DeclareFieldFormat{labelnumberwidth}{}
+\setlength{\biblabelsep}{0pt}
+
+\addbibresource{../zusatzverzeichnisse/Literaturverzeichnis.bib}
+
+\renewcommand*{\mkbibparens}[1]{[#1]} % Change "(" to "["
+
+% ============= url configs ========================================
+% url's use the same font as the normal text does
+\usepackage{url}
+\urlstyle{same}
+% a url breaks at the end of the line just like everything else does 
+% if the url is to long for the page-width
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks%  save the current one
+  \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j%
+  \do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t%
+  \do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D%
+  \do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+  \do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X%
+  \do\Y\do\Z}
+
+% ============= Abkürzungsverzeichnis ==============================
+\usepackage[withpage]{acronym} % acronym, (short names)
+
+% ============= Tabellen ===========================================
+\usepackage{tabularx}
+\renewcommand{\arraystretch}{1.4}
+\usepackage{array,ragged2e}
+
+% for directory tree
+\usepackage{forest}
+
+\definecolor{folderbg}{RGB}{124,166,198}
+\definecolor{folderborder}{RGB}{110,144,169}
+
+\def\Size{4pt}
+\tikzset{
+  folder/.pic={
+    \filldraw[draw=folderborder,top color=folderbg!50,bottom color=folderbg]
+      (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);  
+    \filldraw[draw=folderborder,top color=folderbg!50,bottom color=folderbg]
+      (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+  }
+}
+% ============= inline code examples ===============================
+\usepackage{listings} % put code into your doku, used in \begin
+\usepackage{xcolor} % requred for the table
+
+% rotating package allows to rotate text, figures, and tables
+\usepackage{rotating} 
+
+ % provides commands for modifying and adjusting the appearance of various elementssuch as text, figures, and tables.
+% export option: allows you to use functionalities like the \includegraphics command (used for including images)
+\usepackage[export]{adjustbox}
+
+% Allows usage of svg image files
+\usepackage{svg}
+
+% change listingverzeichnis name
+\renewcommand\lstlistlistingname{Listingverzeichnis}
+\renewcommand\lstlistingname{Listing}
+ 
+% set colors for headings
+\usepackage{xcolor}
+\usepackage{sectsty}
+\definecolor{thiblue}{RGB}{1, 63, 107}
+\chapterfont{\color{thiblue}}  % sets colour of chapters
+
+\usepackage{float}
+ 

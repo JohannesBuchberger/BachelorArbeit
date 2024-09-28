@@ -1,0 +1,51 @@
+% ==================================================================
+% ============= CUSTOM COMMANDS ====================================
+% ==================================================================
+\newcommand{\inlinecode}[2]{\colorbox{backcolour}{\raggedright \lstinline[language=#1]$#2$}}
+
+% ===========================================================================================
+% define yaml: https://tex.stackexchange.com/questions/152829/how-can-i-highlight-yaml-code-in-a-pretty-way-with-listings/152856#152856
+% ===========================================================================================
+\newcommand\YAMLcolonstyle{\color{thiblue}\small}
+\newcommand\YAMLkeystyle{\color{thiblue}\small}
+\newcommand\YAMLvaluestyle{\color{black}\small}
+
+% ===========================================================================================
+% Sowas wie eine Sub-Sub-Sub-Section, diese wird nur nicht angezeigt im Inhaltsverzeichnis
+% ===========================================================================================
+\newcommand{\paragraphandnewline}[1]{\paragraph{#1}\mbox{}\\}
+
+% ===========================================================================================
+% Erstellt eine Abbildung mit einer Nummer darunter, dass ist die Anzahl der Abbildung. 
+% (Bei der 1. steht eine 1, bei der 2. eine 2...
+%
+%
+% Width: /textwidth sollte man immer reinschreiben
+% file: link zu der Abbildung die angezeigt werden soll
+% label: ref-link für die \ref commands, \fullref commands
+% captation: Der Text der optisch neben der oben beschriebenen Nummer steht
+% ===========================================================================================
+
+\newcommand{\abbildung}[4]{% [width]{file}{ref-label}{visible-caption}
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=#1]{#2}
+    \caption{#4}
+    \label{fig:#3}
+  \end{figure}
+}
+
+\newcommand{\abbildungsvg}[4]{% [width]{file}{ref-label}{visible-caption}
+  \begin{figure}[htbp]
+    \centering
+    \includesvg[width=#1]{#2}
+    \caption{#4}
+    \label{fig:#3}
+  \end{figure}
+}
+
+% ==========
+% allows to reference a \label
+% combines \ref and \nameref to create a properly readable link to the label
+% ==========
+\newcommand{\fullref}[1]{\hyperref[#1]{\ref*{#1}~\nameref*{#1}}}

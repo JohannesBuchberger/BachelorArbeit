@@ -1,0 +1,21 @@
+% ==================================================================
+% ============= Kopf- und Fußzeile =================================
+% ==================================================================
+
+% activates pagestyle scrheadings automatically
+\usepackage[
+  markcase=noupper,
+  headsepline,
+  plainheadsepline,
+  automark
+]{scrlayer-scrpage}
+\usepackage{lastpage}
+
+% remove italic header font
+\setkomafont{pagehead}{\sffamily\upshape}
+
+\clearpairofpagestyles
+
+\ihead*{\headmark}
+\ohead*{\thepage}
+
