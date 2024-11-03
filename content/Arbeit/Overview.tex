@@ -1,0 +1,93 @@
+%! Author = jbu
+%! Date = 28.09.24
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+
+% Document
+\begin{document}
+
+%Seiten ohne Kopf- und Fußzeile sowie Seitenzahl
+    \pagestyle{empty}
+    \pagenumbering{gobble}
+    \pagestyle{scrheadings}
+    \setcounter{secnumdepth}{0}
+
+% ============= TITEL UND ABSTRACT ============================
+    \include{../../title-page/title}
+%\include{titel oder, und abstract zeug}
+% =============================================================
+
+    \pagenumbering{Roman}
+
+% ============= VERZEICHNISSE =================================
+    \tableofcontents % Inhaltsverzeichnis
+    \clearpage
+    \listoffigures % Bildverzeichnis
+    \clearpage
+    \listoftables % Tabellenverzeichnis
+    % \include{../quellen/Abkuerzungsverzeichnis} % Abkürzungsverzeichnis
+%\lstlistoflistings % Codeverzeichnis
+% =============================================================
+
+    \setcounter{secnumdepth}{3}
+    \pagenumbering{arabic}
+    \setcounter{page}{1}
+
+% ============= Abstract ======================================
+    \section{Hinführung zum Thema}
+    %\include{hauptinhalt/Themenbeschreibung}
+    \section{Grundlagen und verwendete Tools}
+    %\include{hauptinhalt/}
+    \section{Konzept}
+    \section{Umsetzung}
+    \section{Validierung und Bewertung}
+    \section{Zukunftsausblick}
+
+    \clearpage
+% =============================================================
+
+
+% ============= Hauptinhalt ===================================
+%\include{hauptinhalt/}
+%\clearpage
+
+%\include{hauptinhalt/}
+%\clearpage
+
+% kapitel 3
+%\include{hauptinhalt/}
+%\clearpage
+
+% kapitel 4
+%\include{hauptinhalt/}
+%\clearpage
+
+% kapitel 6
+%\include{hauptinhalt/}
+% =============================================================
+
+% add vertical table padding
+    \renewcommand{\arraystretch}{2}
+% add horizontal table padding
+    \setlength{\tabcolsep}{0.5em}
+
+% ============= END TEIL VOR LITERATUR ========================
+% =============================================================
+
+%The secnumdepth counter determines the depth to which section numbers are displayed. By setting it to 0, you are essentially turning off section numbering for all sectioning commands, which include \chapter, \section, \subsection, and so on.
+    \setcounter{secnumdepth}{0}
+
+% ============= LITERATUR =====================================
+    \clearpage
+    %\printbibliography
+    \clearpage
+% =============================================================
+
+% ============= Nach Literatur ================================
+% =============================================================
+
+\end{document}
