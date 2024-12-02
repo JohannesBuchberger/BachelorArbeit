@@ -1,23 +1,14 @@
 %! Author = jbu
 %! Date = 28.09.24
 
-% Preamble
-\documentclass[11pt]{article}
-
-% Packages
-\usepackage{amsmath}
-
-% Document
-\begin{document}
-
 %Seiten ohne Kopf- und Fußzeile sowie Seitenzahl
-    \pagestyle{empty}
-    \pagenumbering{gobble}
-    \pagestyle{scrheadings}
-    \setcounter{secnumdepth}{0}
+%\pagestyle{empty}
+%\pagenumbering{gobble}
+%\pagestyle{scrheadings}
+%\setcounter{secnumdepth}{0}
 
 % ============= TITEL UND ABSTRACT ============================
-    \include{../../title-page/title}
+    
 %\include{titel oder, und abstract zeug}
 % =============================================================
 
@@ -29,45 +20,21 @@
     \listoffigures % Bildverzeichnis
     \clearpage
     \listoftables % Tabellenverzeichnis
+    \input{content/Arbeit/Abkürzungsverzeichnis}
     % \include{../quellen/Abkuerzungsverzeichnis} % Abkürzungsverzeichnis
 %\lstlistoflistings % Codeverzeichnis
 % =============================================================
-
+    \clearpage
     \setcounter{secnumdepth}{3}
     \pagenumbering{arabic}
     \setcounter{page}{1}
 
 % ============= Abstract ======================================
-    \section{Hinführung zum Thema}
-    %\include{hauptinhalt/Themenbeschreibung}
-    \section{Grundlagen und verwendete Tools}
-    %\include{hauptinhalt/}
-    \section{Konzept}
-    \section{Umsetzung}
-    \section{Validierung und Bewertung}
-    \section{Zukunftsausblick}
-
-    \clearpage
+% erstmal nix
 % =============================================================
 
-
 % ============= Hauptinhalt ===================================
-%\include{hauptinhalt/}
-%\clearpage
-
-%\include{hauptinhalt/}
-%\clearpage
-
-% kapitel 3
-%\include{hauptinhalt/}
-%\clearpage
-
-% kapitel 4
-%\include{hauptinhalt/}
-%\clearpage
-
-% kapitel 6
-%\include{hauptinhalt/}
+    \include{content/Arbeit/hauptinhalt}
 % =============================================================
 
 % add vertical table padding
@@ -89,5 +56,3 @@
 
 % ============= Nach Literatur ================================
 % =============================================================
-
-\end{document}

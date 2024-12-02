@@ -1,0 +1,76 @@
+\section{Motivation der Gastronomieprozesse}
+\subsection{Probleme in der Gastronomie}
+Die Gastronomiebranche befindet aktuell sich im Umbruch und dabei mit mehreren Herausforderungen konfrontiert. Ursachen für das sogenannte ''Gastronomiesterben'' sind unter anderem, das die steigenden Lebensmittelpreise die einen günstigen Einkauf schwer machen, sowie die Mehrwertsteuerbelastung und ein zunehmender Personalmangel \parencite[Vgl.]{noauthor_systemgastronomie_nodate} \parencite[Vgl.]{noauthor_catering_nodate}. Besonders stark betroffen sind dabei kleinere Gastronomiebetriebe, die aufgrund ihrer begrenzten Ressourcen und mangelnder Kapazitäten oft nicht in der Lage sind, sich schnell und effektiv an anzupassen. \cite{aufweisen_themenseite_nodate} Dabei machen die kleineren Gastronomiebetriebe einen Großteil der gesamten Gastronomie aus. \parencite{gruner_deutsche_2016}.
+
+Eine zentrale Problematik für diese Betriebe ist der Fachkräftemangel: Viele Gastronomen stehen vor der Herausforderung Personal zu finden \parencite[Vgl.]{noauthor_systemgastronomie_nodate}. Gleichzeitig steigt der Druck, sich im Zuge der fortschreitenden Digitalisierung anzupassen, um konkurrenzfähig zu bleiben wie durch digitale Zahlung \cite{aufweisen_themenseite_nodate}. Die Kombination dieser beiden Faktoren – Personalmangel und digitale Transformation – bringt kleine Gastronomiebetriebe in eine Lage, in der sie ohne strategische und innovative Lösungsansätze langfristig kaum überlebensfähig sind.
+
+\subsection{Zielsetzung}
+Das Hauptziel dieser Arbeit ist es, basierend auf einen prozessgesteuerten Ansatz durch BPMN Lösungen für die beschriebenen Probleme zu entwickeln.
+Insbesondere soll ein universeller Bestellprozess für Selbstbedienungsrestaurants, welcher von verschiedensten Restaurants über Buffet-, Kiosks- und Abholrestaurants hinaus verwendet werden kann, entworfen werden. Dabei soll der Personalbedarf in der Gastronomie zu minimiert werden und nur minimalen Anpassungsaufwand sollen diese in bestehende Gastronomien integriert werden können.
+Auch soll der Prozess für die Kundschaft optimiert werden. Etwa durch einen automatischen Zahlungsprozess und einer Vereinfachung der Suche nach Restaurants.
+Die Methodik umfasst dabei Gespräche mit den Gastronomien vor Ort, um dabei die Entwicklung und Implementierung von Prozessen mit Abstimmung und Einbezug deren Fachwissens zu gestalten.
+
+\subsection{Aufbau der Arbeit}
+Dieses Kapitel gibt einen Überblick über die Struktur der Arbeit und dient dazu, den roten Faden bei der Konzeption und Entwicklung der Anwendung für die Selbstbedienungsprozesse nachvollziehbar zu machen.
+
+Die vorliegende Bachelorarbeit ist in sechs Kapitel unterteilt. Kapitel 1 führt in die Thematik ein, definiert die Problemstellung und formuliert die Forschungsfrage. Kapitel 2 widmet sich dem theoretischen Rahmen, in dem die relevanten Konzepte und Modelle erläutert werden. Im dritten Kapitel wird die Methodik beschrieben, einschließlich der Datenerhebungs- und Analysemethoden. Die Ergebnisse der Untersuchung werden in Kapitel 4 präsentiert und im darauffolgenden Kapitel 5 kritisch diskutiert. Abschließend fasst Kapitel 6 die zentralen Erkenntnisse zusammen und gibt einen Ausblick auf zukünftige Forschungsperspektiven. Der Aufbau der Arbeit folgt einer logischen Struktur, um die Forschungsfrage schrittweise zu beantworten."
+
+\section{Konzepte und Technologien des prozessgesteuerten Ansatzes}
+\subsection{Grundlagen von BPMN 2.0}
+\subsection{Funktionen und die Notwendigkeit einer Prozess Engine}
+\subsection{Konzept des prozessgesteuerten Ansatzes}
+
+\subsection{Camunda}
+\paragraphandnewline{Call Activity}
+
+\abbildung{0.3\textwidth}{img/CallAct-LoginProc-Empty.png}{iref-call-activity-login-process-empty}{Konfigurationsfeld für die Call Activity}
+
+Im Konfigurationsfeld zur Call Activity gibt es die beiden Kategorien ''General'' und ''Called element''. Es gibt auch noch weitere, aber die werden später angeschaut. 
+\\\\
+Die ''General'' Kategorie. In dieser hat der ''Name'' Syntaktisch keine Bedeutung und dient legentlich der Lesbarkeit. Die ''ID'' wiederum dient der eindeutigen Identifizerung der Aktivität und muss daher auch einzigartig sein.
+\\\\
+Die ''Called element'' Kategorie gibt es nur in der Call Activity. Hier kann man folgende Einstellungen treffen.
+
+\begin{itemize}
+    \item ''Type'': Hier kann man auswählen ob man lieber ein \acs{BPMN} oder \acs{CMMN} ausführen will. \acs{CMMN} ist eine eigene Notation, die sich gut als Ergänzung zu \acs{BPMN} eignet. Da sich im Prinzip ein CMMN zu einem gewissen grad auch als Ad hoc Prozess darstellbar ist, wird um den Umfang im Ramen der Bachelorarbeit nicht zu überschreiten auf \acs{CMMN} verzichtet. Ad-Hoc Subprocess nicht supported daher CMMN
+    https://docs.camunda.org/manual/7.22/reference/bpmn20/
+    % https://www.hsbi.de/multimedia/Fachbereiche/Wirtschaft/Forschung/Arbeitsgruppe+Proze%C3%9Fmanagement/Konferenzpapiere/A_+Zensen_+J_+K%C3%BCster_+A+Comparison+of+Flexible+BPMN+and+CMMN+in+Practice_+in+Proc_+EDOC+2018_+S_+105_114_+IEEE+Computer+Society_+2018-p-126478.pdf?download=1
+    wird auch nicht mehr supported - siehe
+    \item ''Called element'': Dieses Attribut enthält den ''process definition key''. Der Key ist der selbe, der in der Prozessmodellierung als ID vergeben wird. Dies wird wird im 
+    Camunda Modeler als Vermerk angezeigt. Dieser Key muss dabei auf den aufzurufenden Prozess zeigen. Siehe nachfolgend
+    % https://docs.camunda.org/manual/7.22/reference/bpmn20/subprocesses/call-activity/
+\end{itemize}
+\clearpage
+\abbildung{0.5\textwidth}{img/ProcessId-Equals-ProcessDefinitionKey}{iref-call-activity-process-id}{Vermerk das Process Id zu process definition key gemapped wird}
+
+
+    latest: always call the latest process definition version (which is also the default behaviour if the attribute isn’t defined)
+    deployment: if called process definition is part of the same deployment as the calling process definition, use the version from deployment
+    version: call a fixed version of the process definition, in this case calledElementVersion is required. The version number can either be specified in the BPMN XML or returned by an expression (see custom extensions)
+    versionTag: call a fixed version tag of the process definition, in this case calledElementVersionTag is required. The version tag can either be specified in the BPMN XML or returned by an expression (see custom extensions)
+
+
+\section{expression}
+https://juel.sourceforge.net/
+https://docs.camunda.org/manual/7.22/user-guide/process-engine/expression-language/
+
+\section{history cleanup ttl}
+https://docs.camunda.org/manual/latest/user-guide/process-engine/history/history-cleanup/
+
+https://docs.camunda.org/manual/latest/user-guide/process-engine/history/
+
+https://en.wikipedia.org/wiki/ISO_8601#Durations
+
+
+Terminal: 
+Caused by: org.camunda.bpm.engine.ParseException: ENGINE-09005 Could not parse BPMN process. Errors: 
+* ENGINE-12018 History Time To Live (TTL) cannot be null. TTL is necessary for the History Cleanup to work. The following options are possible:
+* Set historyTimeToLive in the model
+* Set a default historyTimeToLive as a global process engine configuration
+* (Not recommended) Deactivate the enforceTTL config to disable this check: ENGINE-12018 History Time To Live (TTL) cannot be null. TTL is necessary for the History Cleanup to work. The following options are possible:
+* Set historyTimeToLive in the model
+* Set a default historyTimeToLive as a global process engine configuration
+* (Not recommended) Deactivate the enforceTTL config to disable this check | resource 
+
+
+ 
