@@ -17,10 +17,41 @@ Die vorliegende Bachelorarbeit ist in sechs Kapitel unterteilt. Kapitel 1 führt
 
 \section{Konzepte und Technologien des prozessgesteuerten Ansatzes}
 \subsection{Grundlagen von BPMN 2.0}
+\paragraphandnewline{}
 \subsection{Funktionen und die Notwendigkeit einer Prozess Engine}
+
+\subsection{Prozess Engine Auswahl}
+Nach tieferer Recherché wurden mehrere Process Engines die aktuell auf dem Markt sind gefunden. Um die optimale Process Engine auszuwählen aus den gefunden wurden auf gewisse Kriterien geachtet. 
+\begin{enumerate}
+    \item Kostenlos
+    \item Robust in technischer und finanzieller Hinsicht
+    \item Zukunftssicher
+\end{enumerate}
+
+Was mit Robust in technischer Hinsicht gemeint ist, ist das sich die Engine bewehrt hat, also bei der Implementierung und Ausführung der Prozesse wenige Bugs aufweist.
+
+Bei der Robust in finanzieller Hinsicht ist gemeint, das die Process Engine nicht plötzlich Ihre Lizenz ändern kann und für uns dadurch unvorhergesehene Kosten entstehen.
+
+Bei der Zukunftssicherheit gemeint ist, ist die Engine auch in Zukunft Maintained wird und Updates erhält.
+
+\paragraphandnewline{Gefundene Process Engines}
+\begin{table}[]
+    \centering
+    \begin{tabular}{c|c}
+        Process Cube & ist nicht kostenlos, und schwer evaluierbar für uns \\
+        Spiffworkflow & technisch nicht robust nach eigener Einschätzung \\
+        Camunda 7 & ist nicht zukunftssicher, da keine updates ab 2025 mehr erscheinen \\
+        CIB Seven & ist ein fork von Camunda 7, welcher auch nach 2025 noch updates erhalten wird \\
+        Camunda 8 & nicht kostenlos \\      
+        Flowable Opensource & ist zukunftssicher, robust auch bei finanzieller Hinsicht, da Bindung an alte Activity lizenz besteht. \\
+        Flowable Enterprise & nicht kostenlos, bietet aber mehr features als opensource. Allerdings nicht notwendig weil keine Lowcode Engine benötigt wird.        
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
 \subsection{Konzept des prozessgesteuerten Ansatzes}
 
-\subsection{Camunda}
 \paragraphandnewline{Call Activity}
 
 \abbildung{0.3\textwidth}{img/CallAct-LoginProc-Empty.png}{iref-call-activity-login-process-empty}{Konfigurationsfeld für die Call Activity}
