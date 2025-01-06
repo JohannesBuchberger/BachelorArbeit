@@ -316,6 +316,7 @@ Lösungen hierfür wären, dass man alle Probleme hierfür zusammen betrachtet. 
 
 Um dies zu erreichen, müssten einheitliche digitalisierte Standardprozesse für die Gastronomie festgelegt werden, die am besten auch die oben genannten Probleme adressieren. Einerseits müsste man hier unterscheiden zwischen Restaurants, die alles mit Bedienungen regeln, und Selbstbedienungsrestaurants, die keine oder nur Bedienstete für eingeschränkte Aufgaben haben.
 
+\clearpage
 \subsection{Modellierung der Gastronomieprozesse nach dem \acl{PDA}}
 \label{sec:modellierung}
 Zu Beginn der Modellierung ist festzuhalten, dass die Idee in dieser Arbeit nicht nur darin besteht, das Verwalten für den Gastronomen und den Arbeitsablauf der Köche und Bedienungen zu vereinfachen, sondern auch im weiteren Schritt für die Kunden.
@@ -359,7 +360,6 @@ Die Randbedingungen um diesen Prozess sind relativ lose ohne Einschränkungen ge
 \paragraphandnewline{Beteiligte Prozessrollen}
 Ausgangsperson, welche diesen Prozess startet, ist der hungernde Kunde. Dieser sucht sich ein Restaurant, und hierbei kommen dann gegebenenfalls Köche, Küchengehilfen und gegebenenfalls Bedienungen ins Spiel. 
 
-\clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
 \abbildung{1\textwidth}{img/proc:SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Speisen}
 
@@ -379,13 +379,13 @@ Nachdem der Beleuchtung des Happy Paths, kommt es nun zur Ausnahmebehandlung. Hi
 Auf wie in \fullref{par:spezifikation_von_prozessgesteuerten_anwendungen} beschrieben, wird auf die optionale Ergänzung von Nachrichtenflüssen an dieser Stelle vorerst verzichtet, um die Komplexität des Prozesses zu reduzieren und weil es keine wirklichen Schnittstellen zu externen Systemen gibt.
 
 \paragraphandnewline{Beschreibung des Datenflusses}
-Entsprechend dem ARIS-Modell wurden die Organisationssicht, also wer was macht, die Funktionssicht, also was gemacht wird, und die Steuerungssicht, also der Ablauf, beantwortet. Jetzt fehlt nur noch die Datensicht, also womit was gemacht wird. \citep[vgl.][]{light_aris_2025}
+Entsprechend dem ARIS-Modell wurden die Organisationssicht, also wer was macht, die Funktionssicht, also was gemacht wird, und die Steuerungssicht, also der Ablauf, beantwortet. Jetzt fehlt nur noch die Datensicht, also womit was gemacht wird. \citep[vgl.][]{lackes_aris_2025}
 
 Um zu dieser zu kommen, werden zunächst die Geschäftsobjekte betrachtet, die in diesem Prozess von Relevanz sind. Diese sind hier nur der Kunde und ein Restaurant.
 
 Diese Geschäftsobjekte werden konkret, nachdem der Restaurantfindungsprozess durchgelaufen ist, herausgegeben. Hervorgehoben im Diagramm werden diese durch das Data Object Symbol. Einerseits soll das ausgewählte Restaurant und welcher Kunde für die Bestellung verantwortlich ist, dem Top-Level-Prozess zur Verfügung gestellt werden. Die Information darüber, wer dieser Kunde ist, ist optional, weil ein Kunde, der noch keinen Account hat, an dieser Stelle noch nicht blockiert werden soll. Wie der Datenfluss zeigt, werden diese beiden Geschäftsobjekte dann von den beiden Restaurantprozessen genutzt.
 
-Um nicht jedes Mal Anpassungen im Laufe der nächsten Prozessbeschreibungen beim Datenmodell durchführen zu müssen, wird ein einheitliches Datenmodell mit der Aufschlüsselung der Geschäftsobjekte für alle Prozesse in \fullref{sec:datenmodell} zu finden sein.
+Um nicht jedes Mal Anpassungen im Laufe der nächsten Prozessbeschreibungen ein Datenmodell aufführen zu müssen, wird ein einheitliches Datenmodell mit der Aufschlüsselung der Geschäftsobjekte am Ende für alle Prozesse in \fullref{sec:datenmodell} zu finden sein.
 
 % =================================
 % = Selbstbedienungsrestaurantprozess
@@ -402,19 +402,43 @@ Um den Prozess zu starten, ist es unbedingt notwendig, das Geschäftsobjekt übe
 Die relevanten Rollen hierbei sind der speisende Kunde und das Restaurant.
 Während die meisten Aufgaben, gerade Bezahlung, Bestellung und die Abholung des Essens, fast ausschließlich, bis auf wenige Ausnahmen, vom Kunden zu erledigen sind, ist der Kochvorgang vollständig auf Seiten des Restaurants durchzuführen.
 
+\clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc:Selbstbedienungsrestaurant.png}{iref:SpeiseMain}{Toplevel-Prozess für die Speisen}
+\abbildung{1\textwidth}{img/proc:Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
 
-Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses wird über eine Benutzer-Task vom Kunden verlangt, dass er eine Bestellung aufgibt.
+Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses wird über eine Call Activity der ''Bestellprozess'' gestartet. In diesem wird vom Kunden verlangt, dass er eine Bestellung aufgibt. 
 
-Der Sequenzfluss zeigt anschließend in einen ''Zahlungsprozess''. Im ''Zahlungsprozess'' wird zunächst geprüft, ob es vom Gastronom gewünscht ist, dass hier schon eine Zahlung durchgeführt werden soll. Falls ja, würde hier gezahlt werden, falls nein, würde hier nicht gezahlt werden, sondern erst zu einer späteren Stelle. Nachdem der Unterprozess abgeschlossen wurde, wird hier der Unterprozess ''Bestellungsaufgabeprozess'' gestartet. Dieser ist zunächst für das konkrete Abschicken der Bestellung zuständig.
+Im ''Zahlungsprozess'' wird zunächst geprüft, ob es vom Gastronom gewünscht ist, dass hier schon eine Zahlung durchgeführt werden soll. Falls ja, würde hier vom Kunden gezahlt werden, falls nein, würde erst zu einer späteren Stelle gezahlt werden. Anschließend wird die Bestellung an das Restaurant weitergeleitet.
 
-Weiter geht es jetzt mit dem ''Zubereitungsprozess'' welcher der Küche die Bestellung übermitteln soll. \todo{rollen wechsel}
+Weiter gehend hat das Restaurant die Aufgabe, sich nun im ''Zubereitungsprozess'' um die Bestellung zu kümmern. Hier kommt der Rollenwechsel entsprechend zum Restaurant, wie man an der Line links erkennen kann. Sobald das Essen fertig ist, wird der Kunde benachrichtigt und der Sequenzfluss weiter in einen ''Zahlungsprozess''. 
 
-\paragraphandnewline{Detailinformationen zu den Prozessschritten}
+Der zweite ''Zahlungsprozess'' ist dort, für den Fall, dass der Gastronom verlangt, dass vor der Abholung zu zahlen ist und nicht schon bei der Bestellung, das kann zum Beispiel notwendig sein, wenn ausschließlich Barzahlung erlaubt ist, aber online bestellt wurde. Der hier ausgeführte Unterprozess soll dabei exakt derselbe sein wie der am Anfang des Prozesses.
 
+In dem darauf folgenden ''Abholungsprozess'' wird der Kunde erneut darüber benachrichtigt, dass er sein Essen jetzt zur Abholung bereitsteht. Nachdem der Kunde das Essen abgeholt hat, kann dieser, sofern er innerhalb des Restaurants isst und er noch nicht zahlen musste, nach dem Essen bezahlen. Das ist die letzte Möglichkeit, für den Gastronom eine Zahlung zu verlangen.
 
-\paragraphandnewline{Beschreibung des Prozesskontexts}
+Nun wird der Ausnahmepfad betrachtet, hier ist festzustellen, dass es 2 Eventsubprozesse gibt. In einem der beiden Eventsubprozesse kann durch ein unterbrechendes Eskalationsstartereignis, welches eine ''Stornierung'' ist, gestartet werden. \todo{oben erklären was ein eventsubprozess und unterbrechendes Eskalationsstartereignis ist} Der Selbstbedienungsprozess ist abhängig davon, was das Restaurant vorgibt, zu jedem Zeitpunkt stornierbar. Sollte dabei der Kunde schon gezahlt haben, kann es daher notwendig sein, dass eine Zahlungsrückabwicklung stattfinden muss. 
+
+In den ersten beiden Schritten soll der Prozess noch durch einen ''Restaurantwechsel'' abbrechbar sein. Die Abbruchfunktionalität wird über den anderen Eskalationssubprozess gehandhabt. Wenn das unterbrechende Eskalationsstartereignis durch einen ''Restaurantwechsel'' eintrifft, wird, wie im Top-Level-Prozess modelliert, der Kunde  direkt in die Liste der Restaurants zurückhüpfen.
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+Die hier relevanten Geschäftsobjekte sind einerseits die Bestellung des Kunden und die Rechnung, die er davon bekommt. Andererseits die Restaurantinformationen selber, weil diese den Lauf des Prozesses beeinflussen. Die Bestellung entsteht dabei aus dem Bestellprozess und wird im Laufe des Prozesses, als Laufzeitinformation, in jeden weiteren Subprozess hineingereicht. Der Zahlungsprozess benötigt diese Informationen, um eine Rechnung zu erstellen, der Zubereitungsprozess, um zu wissen, was er zubereiten soll, und die Abholung, um zu wissen, wer was bestellt hat.
+
+Die Restaurantinformationen werden dabei über den Top-Level-Prozess hineingegeben und an jeder Stelle verwendet, daher wird vorerst, um eine gewisse Übersichtlichkeit zu gewährleisten, darauf verzichtet, überall die Datenflüsse anzubringen.
+
+\paragraphandnewline{Beteiligte Prozessrollen}
+Die hier beteiligten Prozessrollen sind einerseits das Restaurant und der Kunde. Wie dem Pool und den Lanes zu entnehmen ist, sind alle Aufgaben, bis auf den Zubereitungsprozess, auf Seiten des Kunden. Der Abholungsprozess kann dabei auch Elemente des Restaurantprozesses beinhalten, aber dies lässt sich an dieser Stelle noch nicht festlegen; mehrheitlich wird dieser hier dem Kunden zugeordnet. 
+
+\subsubsection{Zahlungsprozess für Selbstbedienungsrestaurants}
+\paragraphandnewline{Beteiligte Prozessrollen}
+\paragraphandnewline{Visualisierung des Prozessflusses}
+%\abbildung{1\textwidth}{img/proc:Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+
+\subsubsection{Bestellungsaufgabeprozess für Selbstbedienungsrestaurants}
+\subsubsection{Zubereitungsprozess für Selbstbedienungsrestaurants}
+\subsubsection{Abbholungsprozess für Selbstbedienungsrestaurants}
+\subsubsection{Zahlungsrückabwicklungsprozess für Selbstbedienungsrestaurants}
 
 % =================================
 % = Main Process
