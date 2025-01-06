@@ -10,12 +10,19 @@
 \usepackage[left= 3 cm,right = 3 cm, top = 3 cm, bottom = 3 cm]{geometry}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[utf8]{inputenc} % UTF-8 Encoding 
-\usepackage[ngerman]{babel}
+\usepackage[main=ngerman, english]{babel}
 \usepackage[T1]{fontenc} % Letter encoding
-\renewcommand{\familydefault}{\sfdefault}
-\usepackage{lmodern} % Schriftart "latex modern"
+\usepackage{fontspec}
+\setmainfont{Arial}
 \usepackage{color} % Farben
 \usepackage{eurosym} % euro symbols
+
+
+% ============= Line Spacing =======================================
+\setstretch{1.3}
+
+% ============= TODO's =============================================
+\usepackage{todonotes} % only used for the \listtodoes so can be removed later
 
 % ============= Links ==============================================
 \usepackage[
@@ -28,6 +35,14 @@
 ]{hyperref}  % hyperlinks in tableofcontents etc 
 
 \usepackage{nameref}
+
+% table settings
+\usepackage{makecell}
+
+\renewcommand\theadalign{bc}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
 
 % ============= mathe stuff ========================================
 % zusätzliche Schriftzeichen der American Mathematical Society
@@ -44,13 +59,16 @@
 \usepackage{pdfpages}
 
 % ============= bibtex configs =====================================
-\usepackage[backend=biber, style=authoryear, sorting=none]{biblatex}
-\DeclareFieldFormat{labelnumberwidth}{}
-\setlength{\biblabelsep}{0pt}
+\usepackage[authoryear, round]{natbib}
+\bibliographystyle{plainnat} % Style of the bibliography
 
-\addbibresource{../zusatzverzeichnisse/Literaturverzeichnis.bib}
+%\usepackage[backend=biber, style=authoryear, sorting=none]{biblatex}
+%\DeclareFieldFormat{labelnumberwidth}{}
+%\setlength{\biblabelsep}{0pt}
 
-\renewcommand*{\mkbibparens}[1]{[#1]} % Change "(" to "["
+%\addbibresource{../zusatzverzeichnisse/Literaturverzeichnis.bib}
+
+%\renewcommand*{\mkbibparens}[1]{[#1]} % Change "(" to "["
 
 % ============= url configs ========================================
 % url's use the same font as the normal text does

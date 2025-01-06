@@ -9,7 +9,7 @@
 
 % ============= TITEL UND ABSTRACT ============================
     
-%\include{titel oder, und abstract zeug}
+    \include{title-page/title}
 % =============================================================
 
     \pagenumbering{Roman}
@@ -17,26 +17,31 @@
 % ============= VERZEICHNISSE =================================
     \tableofcontents % Inhaltsverzeichnis
     \clearpage
+    \addcontentsline{toc}{section}{Abbildungsverzeichnis} 
     \listoffigures % Bildverzeichnis
     \clearpage
+    \addcontentsline{toc}{section}{Tabellenverzeichnis} 
     \listoftables % Tabellenverzeichnis
+    \clearpage
+    \addcontentsline{toc}{section}{Abbildungsverzeichnis} 
     \input{content/Arbeit/Abkürzungsverzeichnis}
-    % \include{../quellen/Abkuerzungsverzeichnis} % Abkürzungsverzeichnis
 %\lstlistoflistings % Codeverzeichnis
 % =============================================================
     \clearpage
     \setcounter{secnumdepth}{3}
     \pagenumbering{arabic}
     \setcounter{page}{1}
+    
+    % set how long the line-break is after a /par
+    \setlength{\parskip}{13.8pt plus 0pt minus 3pt}
 
 % ============= Abstract ======================================
-% erstmal nix
-% =============================================================
-
-% ============= Hauptinhalt ===================================
     \include{content/Arbeit/Abstract}
+    \clearpage
+% =============================================================
+    
+% ============= Hauptinhalt ===================================
     \include{content/Arbeit/hauptinhalt}
-    \include{content/Arbeit/EidesstattlicheErklarung}
 % =============================================================
 
 % add vertical table padding
@@ -50,9 +55,15 @@
 %The secnumdepth counter determines the depth to which section numbers are displayed. By setting it to 0, you are essentially turning off section numbering for all sectioning commands, which include \chapter, \section, \subsection, and so on.
     \setcounter{secnumdepth}{0}
 
+    \listoftodos
+    
+    \include{content/Arbeit/EidesstattlicheErklarung}
+
+
 % ============= LITERATUR =====================================
     \clearpage
-    %\printbibliography
+    \addcontentsline{toc}{section}{Literatur} % Add to table of contents
+    \bibliography{quellen/Literaturverzeichnis}
     \clearpage
 % =============================================================
 

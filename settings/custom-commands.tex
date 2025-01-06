@@ -13,7 +13,14 @@
 % ===========================================================================================
 % Sowas wie eine Sub-Sub-Sub-Section, diese wird nur nicht angezeigt im Inhaltsverzeichnis
 % ===========================================================================================
-\newcommand{\paragraphandnewline}[1]{\paragraph{#1}\mbox{}\\}
+\newcommand{\paragraphandnewline}[1]{\paragraph{#1}\mbox{}
+
+}
+
+% ===========================================================================================
+% vom \nameref package und \autoref vom hyperref package damit ein gescheid lesbare referenz ensteht 
+% ===========================================================================================
+\newcommand{\fullref}[1]{\autoref{#1} \nameref{#1}}
 
 % ===========================================================================================
 % Erstellt eine Abbildung mit einer Nummer darunter, dass ist die Anzahl der Abbildung. 
