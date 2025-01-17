@@ -1,0 +1,153 @@
+\phantomsection
+\markboth{Anhang}{Anhang}
+\section*{Anhang}
+\addcontentsline{toc}{section}{Anhang}
+
+Die anfänglichen Code-Teile zeigen die Implementierung eines Services, und zwar des Order Services.
+
+\begin{lstlisting}[language=SH, caption=Order Persistence Service - Configuration]
+######################
+# Application Configuration
+######################
+spring.application.name=order-service
+spring.docker.compose.file=docker/compose.yaml
+spring.docker.compose.skip.in-tests=false
+
+######################
+# Database Configuration
+######################
+spring.datasource.url=jdbc:postgresql://localhost:8436/OrderDatabase
+spring.datasource.username=localdev
+spring.datasource.password=password
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+######################
+# Kafka Configuration
+######################
+spring.kafka.bootstrap-servers=localhost:19092
+spring.kafka.consumer.group-id=order.service.consumer
+
+######################
+# Order Consumer
+######################
+spring.kafka.order.consumer.topic=pe.outgoing.orders
+
+######################
+# Invoice Consumer
+######################
+spring.kafka.invoice.consumer.topic=pe.outgoing.invoices
+\end{lstlisting}
+
+Durch den dargestellten Text ist der Order Service konfiguriert. Die Aufgabe von diesem Service ist es, die von der Prozess Engine relevanten Bestellungen und Rechnungen zu persistieren. Durch die externe Speicherung können dann auch einfach andere Dienste darauf zugreifen, und falls die Prozess Engine nicht verfügbar ist, kann dieser Dienst weiterhin Daten liefern.
+
+Die im Kontext des Message Brokers relevanten Informationen sind die Konfigurationen zu Kafka, Order Consumer und Invoice Consumer. In der Theorie wird zwischen einem Consumer und einem Subscriber unterschieden, allerdings wird darauf bei der Benennung seitens Kafka weniger Fokus gelegt. \
+
+\begin{lstlisting}[language=Java, caption=Implementierung des Subscribers für Orders und Invoices]
+@Slf4j
+@Component
+public class MultiSubscriber
+{
+	private final PersistenceService persistenceService;
+
+	@Autowired
+	public MultiSubscriber(PersistenceService persistenceService)
+	{
+		this.persistenceService = persistenceService;
+	}
+
+	@KafkaListener(topics = "${spring.kafka.order.consumer.topic}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "orderDtoKafkaListenerContainerFactory")
+	public void receiveOrder(OrderDto orderDto)
+	{
+		persistenceService.saveOrder(orderDto);
+	}
+
+	@KafkaListener(topics = "${spring.kafka.invoice.consumer.topic}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "invoiceDtoKafkaListenerContainerFactory")
+	public void receiveInvoice(InvoiceDto invoiceDto)
+	{
+		try
+		{
+			persistenceService.saveInvoice(invoiceDto);
+		}
+		catch (OrderNotFoundException e)
+		{
+			log.info("Order not found for invoice {}", invoiceDto.getInvoiceNumber());
+        }
+    }
+}
+\end{lstlisting}
+
+Die hier gezeigte Java 21 Klasse nimmt sich das Framework Springboot zur Hilfe. Dabei wird die Implementierung des Subscribers widerspiegelt, welcher die Daten aus dem Message Broker liest. Die Einzelheiten zu dem jeweiligen Code teilen ist in der Dokumentation von Springboot, \cite{springboot_spring_2025} nachlesbar.
+
+\begin{lstlisting}[language=Java, caption=Konfiguration des Message Brokers im Code]
+@Configuration
+public class KafkaInvoiceConsumerConfig
+{
+    @Value("${spring.kafka.bootstrap-servers}")
+	private String bootstrapServers;
+
+	@Value("${spring.kafka.consumer.group-id}")
+	private String invoiceConsumerGroupId;
+
+	public ConsumerFactory<String, InvoiceDto> invoiceDtoConsumerFactoryConsumerFactory()
+	{
+		Map<String, Object> props = new HashMap<>();
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, invoiceConsumerGroupId);
+		props.put(KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+		JsonDeserializer<InvoiceDto> deserializer = new JsonDeserializer<>(InvoiceDto.class, false);
+		deserializer.addTrustedPackages("*");
+		return new DefaultKafkaConsumerFactory<>(props, null, deserializer);
+	}
+
+	@Bean
+	public ConcurrentKafkaListenerContainerFactory<String, InvoiceDto> invoiceDtoKafkaListenerContainerFactory()
+	{
+		ConcurrentKafkaListenerContainerFactory<String, InvoiceDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(invoiceDtoConsumerFactoryConsumerFactory());
+		return factory;
+	}
+}
+\end{lstlisting}
+
+Die in der Listing 2 referenzierten \lstinline{containerFactories} wurden wie oben gezeigt definiert. Aufgrund der Menge an Klassen wird darauf verzichtet, alle Einzelheiten zu zeigen. Das Ziel ist es hier lediglich, das Grundkonzept zu zeigen.
+
+
+\abbildung{0.3\textwidth}{img/CallAct-LoginProc-Empty.png}{iref-call-activity-login-process-empty}{Konfigurationsfeld für die Call Activity}
+
+Im Konfigurationsfeld zur Call Activity gibt es die beiden Kategorien ''General'' und ''Called element''. Es gibt auch noch weitere, aber die werden später angeschaut. 
+
+Die ''General'' Kategorie. In dieser hat der ''Name'' Syntaktisch keine Bedeutung und dient legentlich der Lesbarkeit. Die ''ID'' wiederum dient der eindeutigen Identifizerung der Aktivität und muss daher auch einzigartig sein.
+x§
+Die ''Called element'' Kategorie gibt es nur in der Call Activity. Hier kann man folgende Einstellungen treffen.
+
+\begin{itemize}
+    \item ''Type'': Hier kann man auswählen ob man lieber ein \acs{BPMN} oder \acs{CMMN} ausführen will. \acs{CMMN} ist eine eigene Notation, die sich gut als Ergänzung zu \acs{BPMN} eignet. Da sich im Prinzip ein CMMN zu einem gewissen grad auch als Ad hoc Prozess darstellbar ist, wird um den Umfang im Ramen der Bachelorarbeit nicht zu überschreiten auf \acs{CMMN} verzichtet. Ad-Hoc Subprocess nicht supported daher CMMN
+    https://docs.camunda.org/manual/7.22/reference/bpmn20/
+    % https://www.hsbi.de/multimedia/Fachbereiche/Wirtschaft/Forschung/Arbeitsgruppe+Proze%C3%9Fmanagement/Konferenzpapiere/A_+Zensen_+J_+K%C3%BCster_+A+Comparison+of+Flexible+BPMN+and+CMMN+in+Practice_+in+Proc_+EDOC+2018_+S_+105_114_+IEEE+Computer+Society_+2018-p-126478.pdf?download=1
+    wird auch nicht mehr supported - siehe
+    \item ''Called element'': Dieses Attribut enthält den ''process definition key''. Der Key ist der selbe, der in der Prozessmodellierung als ID vergeben wird. Dies wird wird im 
+    Camunda Modeler als Vermerk angezeigt. Dieser Key muss dabei auf den aufzurufenden Prozess zeigen. Siehe nachfolgend
+    % https://docs.camunda.org/manual/7.22/reference/bpmn20/subprocesses/call-activity/
+\end{itemize}
+\clearpage
+\abbildung{0.5\textwidth}{img/ProcessId-Equals-ProcessDefinitionKey}{iref-call-activity-process-id}{Vermerk das Process Id zu process definition key gemapped wird}
+
+
+    latest: always call the latest process definition version (which is also the default behaviour if the attribute isn’t defined)
+    deployment: if called process definition is part of the same deployment as the calling process definition, use the version from deployment
+    version: call a fixed version of the process definition, in this case calledElementVersion is required. The version number can either be specified in the BPMN XML or returned by an expression (see custom extensions)
+    versionTag: call a fixed version tag of the process definition, in this case calledElementVersionTag is required. The version tag can either be specified in the BPMN XML or returned by an expression (see custom extensions)
+
+
+\paragraphandnewline{expressions}
+https://juel.sourceforge.net/
+https://docs.camunda.org/manual/7.22/user-guide/process-engine/expression-language/
+
+\paragraphandnewline{history cleanup and time to live (ttl)}
+https://docs.camunda.org/manual/latest/user-guide/process-engine/history/history-cleanup/
+
+https://docs.camunda.org/manual/latest/user-guide/process-engine/history/
+
+https://en.wikipedia.org/wiki/ISO_8601#Durations
+

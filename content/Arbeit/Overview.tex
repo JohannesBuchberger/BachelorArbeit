@@ -15,6 +15,8 @@
     \pagenumbering{Roman}
 
 % ============= VERZEICHNISSE =================================
+    \include{content/Arbeit/Danksagung}
+    \clearpage
     \tableofcontents % Inhaltsverzeichnis
     \clearpage
     \addcontentsline{toc}{section}{Abbildungsverzeichnis} 
@@ -25,21 +27,21 @@
     \clearpage
     \addcontentsline{toc}{section}{Abbildungsverzeichnis} 
     \input{content/Arbeit/Abkürzungsverzeichnis}
-%\lstlistoflistings % Codeverzeichnis
+    %\lstlistoflistings % Codeverzeichnis
 % =============================================================
-    \clearpage
-    \setcounter{secnumdepth}{3}
-    \pagenumbering{arabic}
-    \setcounter{page}{1}
-    
-    % set how long the line-break is after a /par
-    \setlength{\parskip}{13.8pt plus 0pt minus 3pt}
 
+    % set how long the line-break is after a /par
+    \setlength{\parskip}{13.8pt plus 0pt minus 0pt}
+    
 % ============= Abstract ======================================
     \include{content/Arbeit/Abstract}
     \clearpage
 % =============================================================
     
+    \clearpage
+    \setcounter{secnumdepth}{3}
+    \pagenumbering{arabic}
+    \setcounter{page}{1}
 % ============= Hauptinhalt ===================================
     \include{content/Arbeit/hauptinhalt}
 % =============================================================
@@ -56,9 +58,6 @@
     \setcounter{secnumdepth}{0}
 
     \listoftodos
-    
-    \include{content/Arbeit/EidesstattlicheErklarung}
-
 
 % ============= LITERATUR =====================================
     \clearpage
@@ -69,3 +68,8 @@
 
 % ============= Nach Literatur ================================
 % =============================================================
+
+% =============================================================
+
+    \include{content/Arbeit/Anhang}
+    \include{content/Arbeit/EidesstattlicheErklarung}

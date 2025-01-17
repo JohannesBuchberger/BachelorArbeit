@@ -1,4 +1,5 @@
 \section{Motivation der Gastronomieprozesse}
+\label{sec:motivation_gastronomie}
 \subsection{Probleme in der Gastronomie}
 Die Gastronomiebranche befindet sich aktuell im Umbruch und dabei mit mehreren Herausforderungen konfrontiert. Ursachen für das sogenannte ''Gastronomiesterben'' sind unter anderem, dass die steigenden Lebensmittelpreise einen günstigen Einkauf schwer machen, sowie die Mehrwertsteuerbelastung und ein zunehmender Personalmangel \citep[vgl.][]{graefe_systemgastronomie_2018} \citep[vgl.][]{graefe_catering_2017}. Besonders stark betroffen sind dabei kleinere Gastronomiebetriebe, die aufgrund ihrer begrenzten Ressourcen und mangelnder Kapazitäten oft nicht in der Lage sind, sich schnell und effektiv anzupassen. \citep[vgl.][]{graefe_themenseite_2024} Dabei machen die kleineren Gastronomiebetriebe einen Großteil der gesamten Gastronomie aus. \citep[vgl.][]{gruner_deutsche_2016}. 
 
@@ -12,14 +13,19 @@ Auch soll der Prozess für die Kundschaft optimiert werden. Etwa durch einen aut
 Die Methodik umfasst dabei Gespräche mit den Gastronomien vor Ort, um dabei die Entwicklung und Implementierung von Prozessen mit Abstimmung und Einbezug deren Fachwissens zu gestalten.
 
 \subsection{Aufbau der Arbeit}
-\todo{Aufbau der Arbeit erläutern}
 Dieses Kapitel gibt einen Überblick über die Struktur der Arbeit und dient dazu, den roten Faden bei der Konzeption und Entwicklung der Anwendung für die Selbstbedienungsprozesse nachvollziehbar zu machen.
 
-%############ AI
-%Die vorliegende Bachelorarbeit ist in sechs Kapitel unterteilt. Kapitel 1 führt in die Thematik ein, definiert die Problemstellung und formuliert die Forschungsfrage. Kapitel 2 widmet sich dem theoretischen Rahmen, in dem die relevanten Konzepte und Modelle erläutert werden. Im dritten Kapitel wird die Methodik beschrieben, einschließlich der Datenerhebungs- und Analysemethoden. Die Ergebnisse der Untersuchung werden in Kapitel 4 präsentiert und im darauffolgenden Kapitel 5 kritisch diskutiert. Abschließend fasst Kapitel 6 die zentralen Erkenntnisse zusammen und gibt einen Ausblick auf zukünftige Forschungsperspektiven. Der Aufbau der Arbeit folgt einer logischen Struktur, um die Forschungsfrage schrittweise zu beantworten."
-%#################
+Die vorliegende Bachelorarbeit ist in 5 Kapitel unterteilt. Hier im \autoref{sec:motivation_gastronomie} wurde wesentlich in die Thematik eingeführt und der Umfang dieser Arbeit formuliert. \autoref{sec:konzepte_tech_pda} widmet sich den vielen relevanten Konzepten, Methoden, Technologien und Modellen, die für das weitere Verständnis der Bachelorarbeit notwendig sind. Ebenfalls werden hier bereits die Entscheidungen getroffen, warum welche grundlegende Technologie für die Ausführung der Bachelorarbeit verwendet wird.
 
+Im \autoref{sec:prozesse_gastronomie} wird schließlich eine genauere Problemverständnisschärfung durchgeführt. Daraus werden dann durch die im  \autoref{sec:konzepte_tech_pda} erklärten Methoden Prozesse abgeleitet, welche anschließend ausmodelliert erklärt werden.
+
+Technische Details zu der durch die im \autoref{sec:prozesse_gastronomie} entstandenen Prozesse werden im \autoref{sec:technologie_prozesse} genauer erläutert. Darunter fällt dann Datenmodellierung sowie die Architektur des Systems und deren Komponenten.
+
+Zum Schluss der Arbeit folgt im \autoref{sec:zukunft} ein Ausblick auf zukünftige Entwicklungen, die sich daraus ergeben können.
+
+\clearpage
 \section{Konzepte und Technologien des prozessgesteuerten Ansatzes}
+\label{sec:konzepte_tech_pda}
 \subsection{Der Prozessgesteuerte Ansatz}
 Diese Bachelorarbeit zielt darauf ab, eine \ac{PA} gemäß Volker Stiehls Definition zu erstellen. Eine \ac{PA} ist wie folgt definiert.
 
@@ -38,7 +44,7 @@ Die Methodologie, welche den \ac{PDA} realisiert, ist dabei ein Top-down-Ansatz,
 
 Anzumerken ist dabei, dass ein Bottom-up-Ansatz bis zuletzt vermieden wird. Dieser würde zuerst die möglicherweise benötigten Services betrachten und sich nicht voll auf die Lösung des fachlichen Problems konzentrieren. \citep[vgl.][S. 53]{stiehl_prozessgesteuerte_2013}
 
-Detaillierter wird beim Top-down-Ansatz ein Problem immer weiter verfeinert, bis sich die Geschäftsobjekte und fachlich benötigten Services herauskristallisieren. Problem dabei ist, dass es zu Services kommen kann, die technisch nicht notwendig oder schwierig zu implementieren sind. \todo{Gegenchecken ob das auch gemacht wurde} Dieser Umstand wird später im Kapitel \fullref{sec:technische_architektur} nochmal aufgegriffen. \citep[vgl.][S. 52ff]{stiehl_prozessgesteuerte_2013}
+Detaillierter wird beim Top-down-Ansatz ein Problem immer weiter verfeinert, bis sich die Geschäftsobjekte und fachlich benötigten Services herauskristallisieren. Das Problem dabei ist, dass es zu Services kommen kann, die technisch nicht notwendig oder schwierig zu implementieren sind. Darum wird das durch einen technischen Blick nach dem Definieren der Services ergänzt, um genau das zu verhindern. \citep[vgl.][S. 52ff]{stiehl_prozessgesteuerte_2013}.
 
 \paragraphandnewline{Spezifikation von prozessgesteuerten Anwendungen}
 \label{par:spezifikation_von_prozessgesteuerten_anwendungen}
@@ -97,30 +103,62 @@ Das Datenformat, das dafür im \ac{BPMN} 2.0-Standard für die Beschreibung der 
 \end{itemize}
 \citep[vgl.][S. 5]{bruce_bpmn_2012}
 
-\clearpage
 \paragraphandnewline{Relevante \ac{BPMN} Symbole}  
-\abbildung{0.85\textwidth}{img/proc:Beispielprozess.png}{fig:tasks}{Beispielprozess (Eigengestaltung)}
+\abbildung{0.85\textwidth}{img/proc;Beispielprozess.png}{fig:tasks}{Beispielprozess (Eigengestaltung)}
+
 Um nachfolgende \ac{BPMN}-Modellierungen einfacher nachvollziehen zu können und den Einstieg und den Zusammenhang zwischen den nachfolgenden Symbolen zu vereinfachen, ist hier ein beispielhaftes \ac{BPMN} Modell dargestellt. Die hier gezeigten Symbole sind dabei nur ein kleines Subset der tatsächlich verfügbaren Symbole und sollen eine mögliche Anordnung zeigen. 
 
 Nachfolgend werden alle vorkommenden \ac{BPMN}-Symbole aufgelistet. Orange gefärbte sind solche, welche von der ausgewählten Process Engine ausgeführt werden können. Alle in schwarz sind allerdings irrelevant, weil diese entsprechend nicht unterstützt werden. Mehr zur Prozess Engine Auswahl in \fullref{sec:process_engine_auswahl}. Ausführlicher werden nicht alle orangen Symbole erklärt, sondern nur die, welche auch später verwendet werden.
 
-Nicht explizit erklärt, aber auch überall verwendet wird der verbindende Weg,  dieser wird ab jetzt Sequenzfluss genannt. Ein Sequenzfluss beschreibt dabei die Logik an, in welcher Reihenfolge der Prozess umgesetzt wird. \citep[vgl.][S. 13]{bruce_englisch_2011} 
+Nicht explizit erklärt, aber auch überall verwendet wird der verbindende Weg,  dieser wird ab jetzt Sequenzfluss genannt. Ein Sequenzfluss beschreibt dabei die Logik, in welcher Reihenfolge der Prozess umgesetzt wird. \citep[vgl.][S. 13]{bruce_englisch_2011} 
 
 \abbildung{0.3\textwidth}{img/spec:pool.png}{fig:pool}{Teilnehmer Pools \citep[][]{camunda_services_gmbh_bpmn_2024}}
-''Pools'' gibt es als White-Box-Pools und als Black-Box-Pools. In beiden Varianten werden die im Pool vorhandenen Lanes mit den Namen beschriftet, welche die Aufgaben abarbeitende Geschäftseinheit beziehungsweise Rolle sind. Ein White-Box-Pool ist dabei ein Pool, in dessen Lane ein Geschäftsprozess modelliert ist. Sollten die Lanes eines Pools allerdings leer sein, spricht man von einem Black-Box-Pool. \citep[vgl.][S. 55]{bruce_bpmn_2012}
+Das dargestellte Bild zeigt einen Pool. ''Pools'' gibt es dabei in zwei Geschmacksrichtungen, einmal als  White-Box-Pools und als Black-Box-Pools. Ein White-Box-Pool ist dabei ein Pool, in dessen Lanes ein Geschäftsprozess modelliert ist. Dabei werden die im Pool vorhandenen Lanes mit den Namen beschriftet. Auf den Lanes wird beschriftet, welche Rolle für die Abarbeitung der Aktivitäten in diesem Bereich zuständig ist. Sollten die Lanes eines Pools allerdings leer sein, beziehungsweise nicht vorhanden, spricht man von einem Black-Box-Pool. Das bedeutet im wesentlichen, dass nicht bekannt ist, was dort passiert. \citep[vgl.][S. 55]{bruce_bpmn_2012}
 
-\clearpage
 \abbildung{0.8\textwidth}{img/spec:events.png}{fig:events}{BPMN Ereignisse \citep[][]{camunda_services_gmbh_bpmn_2024}}
 
-In dieser Auflistung sind Symbole vom Typ Multiple und Parallel Multiple nicht vorhanden. Grund dafür ist, dass diese von der ausgewählten Prozess Engine Camunda, wie später im Kapitel \fullref{sec:process_engine_auswahl} näher ausgeführt wird, nicht unterstützt werden.
+In dieser Auflistung sind Symbole vom Typ Multiple und Parallel Multiple nicht vorhanden. Grund dafür ist, dass diese von der ausgewählten Prozess Engine Camunda, die später im Kapitel \fullref{sec:process_engine_auswahl} näher ausgeführt wird, nicht unterstützt werden.
 
-Nach Silver ist ein \ac{BPMN} Event die Beschreibung dafür, wie ein Prozess auf ein Signal oder einen Hinweis reagiert. Auch beschreibt ein Event, wie der Prozess ein Signal oder einen Hinweis ausgibt, nachdem etwas passiert ist. \citep[vgl.][S. 103]{bruce_bpmn_2012}
+Nach Silver ist ein \ac{BPMN} Event die Beschreibung dafür, wie ein Prozess auf ein Signal oder einen Hinweis reagiert. Auch wird durch ein Event beschrieben, wie der Prozess Signale oder Hinweise ausgibt, nachdem etwas passiert ist. \citep[vgl.][S. 103]{bruce_bpmn_2012}
 
-Events, welche in einem Prozess das Ausgeben von Signalen oder Hinweisen beschreiben, sind alle, welche unter ''Start'' beziehungsweise unter ''Intermediate''-''Throw'' und ''End'' gelistet sind. Die restlichen ''Intermediate'' Events sind dementsprechend für die Beschreibung, wie der Prozess reagiert, zuständig.
+Events, welche in einem Prozess das Ausgeben von Signalen oder Hinweisen beschreiben, sind alle, welche in der Abbildung unter ''Start'' beziehungsweise unter ''Intermediate''-''Throw'' und ''End'' gelistet sind. Die restlichen ''Intermediate'' Events beschreiben, wie der Prozess auf das Empfangen von Signalen oder Hinweisen reagieren soll.
 
-Startet ein Prozess beispielsweise mit einem normalen Start-Event, dieses gibt den Auslöser beziehungsweise den Grund an, warum der Prozess eintritt \citep[vgl.][S. 49]{bruce_bpmn_2012}.
+Unter Start, Normal und None ist in der Abbildung das normale Startereignis zu finden. Das startet einen Prozess und gibt den Auslöser beziehungsweise den Grund an, warum der Prozess eintritt \citep[vgl.][S. 49]{bruce_bpmn_2012}.
 
-Ein weiteres Ereignis ist das intermediate boundary Escalationevent, auf Deutsch angeheftetes unterbrechendes Eskalationsevent. Der Prozessschritt, an dem dieses Event angeheftet ist, kann abgebrochen werden, solange er aktiv ist. Im Falle eines Abbruchs durch eine Eskalation wird der Sequenzfluss an der Position des Eskalationsevents fortgesetzt, statt dem ursprünglichen Sequenzfluss der Aktivität zu folgen. \citep[vgl.][S. 107]{bruce_englisch_2011}
+Der Gegensatz zu Starteereignissen stehen die End-Ereignisse. Die mit dem dicken Rand gekennzeichneten Symbole sind essenziell, um festzulegen, wann ein Prozess zu Ende geht. Das kann über verschiedene Arten passieren. Ein Prozess kann erfolgreich beendet werden oder auch mit einem Fehler. Das erlaubt es dann den darauf folgenden Prozessen, darauf zu reagieren, da diese auf die Endereignisse reagieren können. \citep[vgl.][S. 55f]{bruce_englisch_2011}
+
+Ein weiteres Ereignis ist das intermediate Escalationevent, auf Deutsch unterbrechendes Eskalationsevent. Damit würde signalisiert werden, dass im Prozess eine Ausnahmesituation eintritt. Verwendet wird dieses Event in dieser Arbeit in seiner ''start event subprocess escalation'', ''intermediate boundary escalation'' und ''end escalation'' Variante. Die ''start event subprocess escalation'' wird dabei verwendet, um eine zuvor geworfene Eskalation zu behandeln. Der Prozessschritt, an dem eine ''intermediate boundary escalation'' angeheftet ist, kann abgebrochen werden, solange er aktiv ist. Im Falle eines Abbruchs durch eine Eskalation wird der Sequenzfluss an der Position des Eskalationsevents fortgesetzt, statt dem ursprünglichen Sequenzfluss der Aktivität herauszufolgen. Zuletzt kommt noch die ''end escalation'', diese funktioniert wie ein normales End-Ereigniss. Hier wird der Sequenzfluss beendet und die Eskalation wird an den ummantelnden Prozess weitergegeben. \citep[vgl.][S. 107, 111f]{bruce_englisch_2011}
+%* Sequenzfluss ✅
+%* Externer Blackpool ✅
+%* Startereignis ✅
+%* Endereignis ✅
+%* startendes Eskalationsevent ✅
+%* unterbrechendes Eskalationsstartereignis ✅
+%* werfendes Eskalationsendereignis ✅
+
+%* startendes Empfangsevent event-subprozess
+%* unterbrechendes angeheftetes Nachrichtenevent 
+%* unterbrechendes Nachrichtenevent
+
+%* nicht unterbrechendes Timer-Event
+%* unterbrechendes angeheftetes Timerevent
+
+%* eventbasiertes Gateway
+%* werfendes beendendes Error-Event
+
+%* manual task
+%* text-annotation
+%* Call Process
+%* Service Task
+%* Human Task
+%* aufteilendes Gateway
+%* zusammenführendes Gateway
+%* Datenobjekt
+%* Datenfluss 
+%* Eventsubprozesse
+%* Sende Aktivität
+
+Auch Nachrichtenereignisse wie ''message start event subprocess'' ''message intermediate catch'' oder ''message intermediate boundary'' werden verwendet. Diese erlauben es dem Prozess, der diese verwendet \citep[vgl.][S. 102]{bruce}
 
 \abbildung{0.45\textwidth}{img/spec:data_artefacts.png}{fig:data_artefacts}{Data Artefacts \citep[][]{camunda_services_gmbh_bpmn_2024}}
 ''Data Artefacts'' sind Datenspeicher und stellen Informationseinheiten dar. Diese können entweder in einem extra System hinterlegt werden. Auch innerhalb eines Prozesses können Daten verwaltet werden. Allerdings ist keines der Symbole von der Prozess Engine funktional unterstützt, wie ebenfalls im \fullref{sec:process_engine_auswahl} ausgeführt. Dennoch werden diese gegebenenfalls zu Dokumentationszwecken vereinzelt vorhanden sein. \citep[vgl.][S. 59]{bruce_bpmn_2012}
@@ -146,25 +184,25 @@ Eine andere Variante, Unterprozesse zu nutzen, ist eine Call Activity. Diese ist
 \abbildung{0.9\textwidth}{img/spec:tasks.png}{fig:tasks}{Aufgaben, Aktivitäten \citep[][]{camunda_services_gmbh_bpmn_2024}}
 Eine Aufgabe, Task oder auch Aktivität ist eine im Prozess geleistete Arbeitseinheit. Eine Aufgabe kann nicht mehr in weitere Elemente unterteilt werden. Der semantische Unterschied zwischen den Aufgaben wird durch das Icon, das die Bezeichnung des Tasktyps anzeigt, dargestellt und zeigt so, welche Bedeutung der Task zukommt. Im Falle einer User Task, auch Benutzer-Task, heißt dies, dass die Aufgabe nur mit Beteiligung oder ganz durch einen Menschen ausgeführt werden muss \citep[vgl.][S. 39ff]{bruce_bpmn_2012}.
 
-\subsubsection{Verwendung von CMMN}
+\subsubsection{\acl{CMMN}}
 
-Aufgrund des Fokus dieser Bachelorarbeit auf die strukturierten Prozesse wird \ac{CMMN} nur eine untergeordnete Rolle einnehmen. Entsprechend wird die Erklärung kurz ausfallen, für detailliertere Informationen zu \ac{CMMN} ist ebenfalls \citep{freund_praxishandbuch_2017} zu empfehlen.
+Vollständigkeitshalber, um alle Prozessstandards der \ac{OMG} abzubilden, werden nun noch \ac{CMMN} und nachfolgend \acs{DMN} beleuchtet. Aufgrund des Fokus dieser Bachelorarbeit auf die strukturierten Prozesse wird \ac{CMMN} wenn dann nur eine untergeordnete Rolle einnehmen. Entsprechend eine kurze nachfolgende Erklärung. Für detailliertere Informationen zu \ac{CMMN} ist ebenfalls wie auch schon für \ac{BPMN} \cite{freund_praxishandbuch_2017} oder \cite{bruce_cmmn_2020} zu empfehlen.
 
 \label{par:dreiklang_prozessverbesserungsstandards}
-Mit \ac{BPMN} 2.0 wird eigentlich alles angeboten, was für einen Umgang mit Geschäftsprozessen notwendig ist. Trotzdem wurde neben \ac{BPMN} später von der \ac{OMG} auch der \ac{CMMN} Standard veröffentlicht. Laut der \ac{OMG} ist dieser mit dem später veröffentlichten \ac{DMN} Standard Teil des Dreiklangs der Prozessverbesserungsstandards. Die Idee dabei ist, dass \ac{BPMN}, \ac{CMMN} und \ac{DMN} in Kombination verwendet werden können. \citep{object_management_group_case_2016}
+Mit \ac{BPMN} 2.0 wird eigentlich alles angeboten, was für einen Umgang mit Geschäftsprozessen notwendig ist. Trotzdem wurde neben \ac{BPMN} später von der \ac{OMG} auch der \ac{CMMN} Standard veröffentlicht. Laut der \ac{OMG} ist dieser mit dem später veröffentlichten \ac{DMN} Standard Teil des Dreiklangs der Prozessverbesserungsstandards. Die Idee dabei ist, dass \ac{BPMN}, \ac{CMMN} und \ac{DMN} in Kombination verwendet werden können. \citep[vgl.][]{object_management_group_case_2016}
 
 \ac{CMMN} soll dabei bei der unstrukturierten Prozessmodellierung verwendet werden. Diese können natürlich auch mit \ac{BPMN} modelliert werden, das kann aber zu mehreren Problemen führen. Einerseits läuft man in die Gefahr, das Ziel der Klarheit, wie definiert in \fullref{enu:item:qualitatsstandards:klarheit}, zu verletzen. Gerade wenn es fachlich notwendig ist, aus einem Gateway 4, 5 ausgehende Wege zu modellieren, und es zusätzlich dann noch notwendig ist, mehrfach zu diesem Gateway zurückzuspringen, kann das Modell schnell unübersichtlich werden \citep[vgl.][S. 9]{freund_praxishandbuch_2017}. \ac{BPMN} bietet dafür zwar ein Ad-Hoc-Symbol an, dieses kann aber auch schnell unübersichtlich werden, sobald beispielsweise für die Wege verschiedenste Regeln notwendig sind. 
 
-Um dem Ziel, Klarheit und Transparenz zu schaffen, nachzukommen, wird \ac{BPMN} für strukturierte Prozesse verwendet und \ac{CMMN} für unstrukturierte Prozesse verwendet. \citep[vgl.][S. 5]{bruce_bpmn_2012}
-
 \subsubsection{\acl{DMN}}
 
-Wie in \fullref{par:dreiklang_prozessverbesserungsstandards} angesprochen wurde, auch \acl{DMN} von der \ac{OMG} veröffentlicht. Der jüngste der Standards und damit der dritte im Bunde ist dabei also \ac{DMN}. Hierbei handelt es sich um einen Standard, der wie \ac{CMMN} und \ac{BPMN} ebenfalls ein in XML beschriebenes formales Metamodell besitzt. Im Gegensatz zu \ac{BPMN} und \ac{CMMN} ist es dabei nicht der Anspruch dieses Standards, Prozesse modellieren zu können. \citep[vgl.][S. 10f]{freund_praxishandbuch_2017} \todo{Stiehl lesen zu DMN} 
+Wie in \fullref{par:dreiklang_prozessverbesserungsstandards} angesprochen wurde, ist auch \acl{DMN} von der \ac{OMG} veröffentlicht worden. Es ist der jüngste der drei Prozess-Standards und damit der dritte im Bunde. Hierbei handelt es sich um einen Standard, der wie \ac{CMMN} und \ac{BPMN} ebenfalls ein in XML beschriebenes formales Metamodell besitzt. Im Gegensatz zu \ac{BPMN} und \ac{CMMN} ist es dabei nicht der Anspruch dieses Standards, Prozesse modellieren zu können. \citep[vgl.][S. 10f]{freund_praxishandbuch_2017} 
+
+Hauptzweck von \ac{DMN} ist die Unterstützung bei der Modellierung von Entscheidungslogik innerhalb von Geschäftsprozessen. Durch die Nutzung von Entscheidungstabellen können komplexe Entscheidungen, die beispielsweise von spezifischen Bedingungen oder Regeln abhängig sind, einfach visualisiert und standardisiert werden. \citep[vgl.][]{object_management_group_dmn_2025}
 
 \clearpage
 \subsection{Die Prozess Engine in einer prozessgesteuerten Anwendung}
 \subsubsection{Funktionen einer Prozess Engine}
-Um eine \acl{PA} und die damit verbundenen \ac{BPMN}-Modelle zum Ausführen zu bringen, benötigt man zwangsläufig eine Prozess Engine. Damit steht diese als Infrastrukturkomponente verwendete Technologie im Herzen einer \acl{PA}. Da diese so von zentraler Bedeutung ist, ist es wichtig, die Aufgaben neben der Ausführung der Geschäftsprozesse auch kurz abzureißen. \citep[vgl.][]{stiehl_prozessgesteuerte_2024}
+Um zu dem Ziel dieser Arbeit zu kommen, eine \acl{PA} und die damit verbundenen \ac{BPMN}-Modelle zum Ausführen zu bringen, benötigt man zwangsläufig eine Prozess Engine. Damit steht diese als Infrastrukturkomponente verwendete Technologie im Herzen einer \acl{PA}. Da diese so von zentraler Bedeutung ist, ist es wichtig, die Aufgaben neben der Ausführung der Geschäftsprozesse auch kurz abzureißen. \citep[vgl.][]{stiehl_prozessgesteuerte_2024}
 
 Eine Prozess Engine ist eine Softwarekomponente, die zur Automatisierung von Geschäftsprozessen dient. Zur Ausführung müssen Prozessmodelle definiert werden, wie nachfolgend bei \fullref{sec:modellierung} zu sehen ist. \citep[vgl.][]{leymann_definition_2024}
 
@@ -285,18 +323,8 @@ Aufgrund der obigen Betrachtung wurde sich für folgendes Modell entschieden. Zu
 
 Dieser Stack bietet den Vorteil, dass eine kostenlose Prozess Engine verwendet wird, welche fast alle notwendigen \ac{BPMN} Komponenten unterstützt und gleichzeitig eine Modellierungs-App und Admin-App, das Cockpit, mitliefert.
 
-\section{Technologische Umsetzung der Prozesse}
-\subsection{Technologische Umsetzung der Prozesse}
-\subsubsection{ARIS Haus}
-\subsubsection{Technische Architektur und Microservices}
-\label{sec:technische_architektur}
-
-\subsection{3.2 Verwendete Technologien}
-\subsubsection{Asynchrone Kommunikation durch Queuing Systeme}
-\subsubsection{Backend Java Frameworks Quarkus und Springboot}
-\subsubsection{Frontend Java Frameworks Vue mit Nuxt}
-
 \section{Prozessgestaltung für die Gastronomie}
+\label{sec:prozesse_gastronomie}
 \subsection{Problemverständnisschärfung durch Kommunikation mit Gastronomen}
 \label{sec:problemverstaendnis_gastronomie}
 Bei Gesprächen mit Gastronomen in Ingolstadt, hervorzuheben sind dabei Bravo Pizza napoletana und District Five Coffee Roasters - Café.
@@ -316,10 +344,9 @@ Lösungen hierfür wären, dass man alle Probleme hierfür zusammen betrachtet. 
 
 Um dies zu erreichen, müssten einheitliche digitalisierte Standardprozesse für die Gastronomie festgelegt werden, die am besten auch die oben genannten Probleme adressieren. Einerseits müsste man hier unterscheiden zwischen Restaurants, die alles mit Bedienungen regeln, und Selbstbedienungsrestaurants, die keine oder nur Bedienstete für eingeschränkte Aufgaben haben.
 
-\clearpage
 \subsection{Modellierung der Gastronomieprozesse nach dem \acl{PDA}}
 \label{sec:modellierung}
-Zu Beginn der Modellierung ist festzuhalten, dass die Idee in dieser Arbeit nicht nur darin besteht, das Verwalten für den Gastronomen und den Arbeitsablauf der Köche und Bedienungen zu vereinfachen, sondern auch im weiteren Schritt für die Kunden.
+Zu Beginn der Modellierung ist festzuhalten, dass es das Ziel dieser Arbeit ist, das Verwalten für den Gastronomen und den Arbeitsablauf der Köche und Bedienungen zu vereinfachen, sondern auch im weiteren Schritt für die Kunden.
 
 Die folgenden Kern-Prozesse wurden ebenfalls unter anderem identifiziert. 
 
@@ -361,12 +388,11 @@ Die Randbedingungen um diesen Prozess sind relativ lose ohne Einschränkungen ge
 Ausgangsperson, welche diesen Prozess startet, ist der hungernde Kunde. Dieser sucht sich ein Restaurant, und hierbei kommen dann gegebenenfalls Köche, Küchengehilfen und gegebenenfalls Bedienungen ins Spiel. 
 
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc:SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Speisen}
+\abbildung{1\textwidth}{img/proc;SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Restaurantbestellung (Eigengestaltung)}
 
 In der Modellierung des Prozesses folgen wir zunächst dem Happy Path, dabei ist Folgendes beim Startereignis zu erkennen: in diesem Fall, dass ein hungriger Kunde vorhanden ist.
 
 Der Sequenzfluss läuft daraufhin in ein zusammenführendes XOR-Gateway, welches bei der ausschließlichen Betrachtung des Happy Paths noch nicht relevant ist und daher fürs Erste ignoriert werden kann. Wie zu sehen ist, landet der Sequenzfluss nun in einer Call Activity. Diese Stelle im Prozess kennzeichnet somit den Start des Restaurantfindungsprozesses.
-
 Die Gründe, warum hierbei auf eine Call Activity und nicht auf einen eingebetteten Subprozess zurückgegriffen wurde, sind dabei wie folgt. Anders als in einer Call Activity ist es in eingebetteten Subprozessen nicht möglich, einen Pool mit Lanes zu modellieren. Ein eingebetteter Subprozess ist nur ein ausführlicher Teilschritt, daher ist es auch nicht vorgesehen. Ein weiterer Vorteil ist, dass dabei eine parallele Entwicklung vereinfacht wird, da jeder an seinem Prozess feilen kann, ohne gegebenenfalls den Fortschritt des jeweils anderen zu beeinflussen. Um sicherzustellen, dass das Ganze funktioniert, werden bereits im Vorherein Schnittstellen zwischen den Prozessen definiert. Also, was der Unterprozess dem Top-Level-Prozess zurückgeben muss, beziehungsweise welche Eingangsparameter dieser benötigt. Was bei einem weiteren Blick auf das Prozessmodell ebenfalls auffällt, ist, dass gewisse Call Activities rot markiert sind. Die rote Markierung ist da, um hervorzuheben, dass diese Prozessschritte nicht Teil dieser Arbeit sind und daher nicht oder nur oberflächlich behandelt werden.
 
 Nach Abschluss dieses Unterprozesses wird automatisch, programmatisch durch eine Service Task entschieden, ob das resultierende ausgewählte Restaurant ein Selbstbedienungsrestaurant ist oder ein Restaurant, welches Bedienungen beschäftigt. Der Selbstbedienungsrestaurant-Unterprozess wird aufgrund seiner Relevanz und Komplexität im nachfolgenden \fullref{sec:selbstbedienungsrestaurantunterprozess} behandelt.
@@ -390,7 +416,7 @@ Um nicht jedes Mal Anpassungen im Laufe der nächsten Prozessbeschreibungen ein 
 % =================================
 % = Selbstbedienungsrestaurantprozess
 % =================================
-\subsubsection{Essensbestellprozess für Selbstbedienungsrestaurants}
+\subsubsection{Bestellprozess für Selbstbedienungsrestaurants}
 \label{sec:selbstbedienungsrestaurantunterprozess}
 Um die in \fullref{sec:problemverstaendnis_gastronomie} beschriebenen Probleme von langen Warteschlangen und hoher Arbeitslast, welche unter anderem durch die Gebundenheit von Personal durch die Bestellungsaufnahme entstehen, zu reduzieren, wird dieser Prozess modelliert. Hierbei sind die einzelnen Teilschritte der Bestellung, Bezahlung, des Kochvorgangs und Abholung des Essens von besonderer Bedeutung, weil dies die primären Schritte sind, die den Prozess ausmachen.
 
@@ -404,7 +430,7 @@ Während die meisten Aufgaben, gerade Bezahlung, Bestellung und die Abholung des
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc:Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
+\abbildung{1\textwidth}{img/proc;Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant (Eigengestaltung)}
 
 Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses wird über eine Call Activity der ''Bestellprozess'' gestartet. In diesem wird vom Kunden verlangt, dass er eine Bestellung aufgibt. 
 
@@ -414,9 +440,9 @@ Weiter gehend hat das Restaurant die Aufgabe, sich nun im ''Zubereitungsprozess'
 
 Der zweite ''Zahlungsprozess'' ist dort, für den Fall, dass der Gastronom verlangt, dass vor der Abholung zu zahlen ist und nicht schon bei der Bestellung, das kann zum Beispiel notwendig sein, wenn ausschließlich Barzahlung erlaubt ist, aber online bestellt wurde. Der hier ausgeführte Unterprozess soll dabei exakt derselbe sein wie der am Anfang des Prozesses.
 
-In dem darauf folgenden ''Abholungsprozess'' wird der Kunde erneut darüber benachrichtigt, dass er sein Essen jetzt zur Abholung bereitsteht. Nachdem der Kunde das Essen abgeholt hat, kann dieser, sofern er innerhalb des Restaurants isst und er noch nicht zahlen musste, nach dem Essen bezahlen. Das ist die letzte Möglichkeit, für den Gastronom eine Zahlung zu verlangen.
+In dem darauf folgenden ''Abholungsprozess'' wird der Kunde erneut darüber benachrichtigt, dass er sein Essen jetzt zur Abholung bereitsteht. Nachdem der Kunde das Essen abgeholt hat, kann dieser, sofern er innerhalb des Restaurants isst und er noch nicht zahlen musste, nach dem Essen bezahlen. Das ist die letzte Möglichkeit, für den Gastronomen eine Zahlung zu verlangen.
 
-Nun wird der Ausnahmepfad betrachtet, hier ist festzustellen, dass es 2 Eventsubprozesse gibt. In einem der beiden Eventsubprozesse kann durch ein unterbrechendes Eskalationsstartereignis, welches eine ''Stornierung'' ist, gestartet werden. \todo{oben erklären was ein eventsubprozess und unterbrechendes Eskalationsstartereignis ist} Der Selbstbedienungsprozess ist abhängig davon, was das Restaurant vorgibt, zu jedem Zeitpunkt stornierbar. Sollte dabei der Kunde schon gezahlt haben, kann es daher notwendig sein, dass eine Zahlungsrückabwicklung stattfinden muss. 
+Nun wird der Ausnahmepfad betrachtet, hier ist festzustellen, dass es 2 Eventsubprozesse gibt. In einem der beiden Eventsubprozesse kann durch ein unterbrechendes Eskalationsstartereignis, welches eine ''Stornierung'' ist, gestartet werden. Der Selbstbedienungsprozess ist abhängig davon, was das Restaurant vorgibt, zu jedem Zeitpunkt stornierbar. Sollte dabei der Kunde schon gezahlt haben, kann es daher notwendig sein, dass eine Zahlungsrückabwicklung stattfinden muss. 
 
 In den ersten beiden Schritten soll der Prozess noch durch einen ''Restaurantwechsel'' abbrechbar sein. Die Abbruchfunktionalität wird über den anderen Eskalationssubprozess gehandhabt. Wenn das unterbrechende Eskalationsstartereignis durch einen ''Restaurantwechsel'' eintrifft, wird, wie im Top-Level-Prozess modelliert, der Kunde  direkt in die Liste der Restaurants zurückhüpfen.
 
@@ -428,17 +454,37 @@ Die Restaurantinformationen werden dabei über den Top-Level-Prozess hineingegeb
 \paragraphandnewline{Beteiligte Prozessrollen}
 Die hier beteiligten Prozessrollen sind einerseits das Restaurant und der Kunde. Wie dem Pool und den Lanes zu entnehmen ist, sind alle Aufgaben, bis auf den Zubereitungsprozess, auf Seiten des Kunden. Der Abholungsprozess kann dabei auch Elemente des Restaurantprozesses beinhalten, aber dies lässt sich an dieser Stelle noch nicht festlegen; mehrheitlich wird dieser hier dem Kunden zugeordnet. 
 
-\subsubsection{Zahlungsprozess für Selbstbedienungsrestaurants}
+\subsubsection{Bestellprozess}
 \paragraphandnewline{Beteiligte Prozessrollen}
 \paragraphandnewline{Visualisierung des Prozessflusses}
-%\abbildung{1\textwidth}{img/proc:Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
+\abbildung{1\textwidth}{img/proc;Bestellprozess.png}{iref:Bestellprozess}{Bestellprozess (Eigengestaltung)}
+
+
+
+\subsubsection{Zahlungsprozess}
+Der nächste Prozess, der im Selbstbedienungsprozess gezeigt wird, ist der Zahlungsprozess. Der am meisten referenzierten Prozesse kommt diesem eine ganz besondere Bedeutung zu. Sollte hier im Nachhinein etwas geändert werden, kann es dazu führen, dass die anderen Prozesse gleich an mehreren Stellen auseinanderbrechen. Daher ist es ebenfalls wichtig, dass bei zukünftigen Änderungen dieser Prozesse auch alle anderen ausführlich getestet werden.
+
+Im Zahlungsprozess soll durch eine Bestellung, beziehungsweise eine Liste aus zu zahlenden Objekten eine Rechnung erstellt werden. Dort kann z.B. auch Trinkgeld 
+
+\paragraphandnewline{Beteiligte Prozessrollen}
+\paragraphandnewline{Visualisierung des Prozessflusses}
+\clearpage
+\abbildung{1\textwidth}{img/proc;Zahlungsprozess.png}{iref:Zahlungsprozess}{Zahlungsprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Zahlungsvorbereitungsprozess.png}{iref:Zahlungsvorbereitungsprozess}{Zahlungsvorbereitungsprozess (Eigengestaltung)}
 
 \paragraphandnewline{Beschreibung des Datenflusses}
 
-\subsubsection{Bestellungsaufgabeprozess für Selbstbedienungsrestaurants}
-\subsubsection{Zubereitungsprozess für Selbstbedienungsrestaurants}
-\subsubsection{Abbholungsprozess für Selbstbedienungsrestaurants}
-\subsubsection{Zahlungsrückabwicklungsprozess für Selbstbedienungsrestaurants}
+\subsubsection{Zubereitungsprozess}
+\clearpage
+\abbildung{1\textwidth}{img/proc;Zubereitungsprozess.png}{iref:Zubereitungsprozess}{Zubereitungsprozess (Eigengestaltung)}
+
+\subsubsection{Abholungsprozess}
+\clearpage
+\abbildung{1\textwidth}{img/proc;Abholungsprozess.png}{iref:Abholungsprozess}{Abholungsprozess (Eigengestaltung)}
+
+\subsubsection{Zahlungsrückabwicklungsprozess}
+\clearpage
+\abbildung{1\textwidth}{img/proc;Zahlungsrückabwicklungsprozess.png}{iref:Zahlungsrückabwicklungsprozess}{Zahlungsrückabwicklungsprozess (Eigengestaltung)}
 
 % =================================
 % = Main Process
@@ -453,6 +499,7 @@ Die Person, die in diesem Prozess konkret Aufgaben übernehmen kann, ist diejeni
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
+\abbildung{1\textwidth}{img/proc;SpeisekartenEditierProzess.png}{iref:Speisekarteneditierprozess}{Speisekarteneditierprozess (Eigengestaltung)}
 
 \paragraphandnewline{Detailinformationen zu den Prozessschritten}
 Hierbei wird sich an der 
@@ -461,56 +508,26 @@ Hierbei wird sich an der
 \paragraphandnewline{Beschreibung des Prozesskontexts}
 Was passiert mit den Prozessdaten,  Klassendiagramm!
 
-
+\section{Technologische Umsetzung der Prozesse}
+\label{sec:technologie_prozesse}
 \subsection{Datenmodell}
 \label{sec:datenmodell}
-Hier is das Datenmodell
+\abbildung{1\textwidth}{img/uml;order_datenmodell.png}{iref:orderDatabase}{Order Datenbank (Eigengestaltung)}
 
+\subsection{Architektur}
+\abbildung{1\textwidth}{img/uml;Architekturdiagramm}{iref:architekturdiagramm}{Architekturdiagramm (Eigengestaltung)}
 
-% ================
-\clearpage
-\abbildung{0.3\textwidth}{img/CallAct-LoginProc-Empty.png}{iref-call-activity-login-process-empty}{Konfigurationsfeld für die Call Activity}
-
-Im Konfigurationsfeld zur Call Activity gibt es die beiden Kategorien ''General'' und ''Called element''. Es gibt auch noch weitere, aber die werden später angeschaut. 
-
-Die ''General'' Kategorie. In dieser hat der ''Name'' Syntaktisch keine Bedeutung und dient legentlich der Lesbarkeit. Die ''ID'' wiederum dient der eindeutigen Identifizerung der Aktivität und muss daher auch einzigartig sein.
-x§
-Die ''Called element'' Kategorie gibt es nur in der Call Activity. Hier kann man folgende Einstellungen treffen.
-
-\begin{itemize}
-    \item ''Type'': Hier kann man auswählen ob man lieber ein \acs{BPMN} oder \acs{CMMN} ausführen will. \acs{CMMN} ist eine eigene Notation, die sich gut als Ergänzung zu \acs{BPMN} eignet. Da sich im Prinzip ein CMMN zu einem gewissen grad auch als Ad hoc Prozess darstellbar ist, wird um den Umfang im Ramen der Bachelorarbeit nicht zu überschreiten auf \acs{CMMN} verzichtet. Ad-Hoc Subprocess nicht supported daher CMMN
-    https://docs.camunda.org/manual/7.22/reference/bpmn20/
-    % https://www.hsbi.de/multimedia/Fachbereiche/Wirtschaft/Forschung/Arbeitsgruppe+Proze%C3%9Fmanagement/Konferenzpapiere/A_+Zensen_+J_+K%C3%BCster_+A+Comparison+of+Flexible+BPMN+and+CMMN+in+Practice_+in+Proc_+EDOC+2018_+S_+105_114_+IEEE+Computer+Society_+2018-p-126478.pdf?download=1
-    wird auch nicht mehr supported - siehe
-    \item ''Called element'': Dieses Attribut enthält den ''process definition key''. Der Key ist der selbe, der in der Prozessmodellierung als ID vergeben wird. Dies wird wird im 
-    Camunda Modeler als Vermerk angezeigt. Dieser Key muss dabei auf den aufzurufenden Prozess zeigen. Siehe nachfolgend
-    % https://docs.camunda.org/manual/7.22/reference/bpmn20/subprocesses/call-activity/
-\end{itemize}
-\clearpage
-\abbildung{0.5\textwidth}{img/ProcessId-Equals-ProcessDefinitionKey}{iref-call-activity-process-id}{Vermerk das Process Id zu process definition key gemapped wird}
-
-
-    latest: always call the latest process definition version (which is also the default behaviour if the attribute isn’t defined)
-    deployment: if called process definition is part of the same deployment as the calling process definition, use the version from deployment
-    version: call a fixed version of the process definition, in this case calledElementVersion is required. The version number can either be specified in the BPMN XML or returned by an expression (see custom extensions)
-    versionTag: call a fixed version tag of the process definition, in this case calledElementVersionTag is required. The version tag can either be specified in the BPMN XML or returned by an expression (see custom extensions)
-
-
-\section{expression}
-https://juel.sourceforge.net/
-https://docs.camunda.org/manual/7.22/user-guide/process-engine/expression-language/
-
-\section{history cleanup ttl}
-https://docs.camunda.org/manual/latest/user-guide/process-engine/history/history-cleanup/
-
-https://docs.camunda.org/manual/latest/user-guide/process-engine/history/
-
-https://en.wikipedia.org/wiki/ISO_8601#Durations
-
-\subsubsection{Selbstbedinungsprozessmodellierung}
-
+\subsubsection{Asynchrone Kommunikation durch Queuing Systeme}
+\subsubsection{Backend Java Frameworks Quarkus und Springboot}
+\subsubsection{Frontend Java Frameworks Vue mit Nuxt}
 
 \section{Ausblick der praktischen Anwendung}
+\label{sec:zukunft}
 
+In Zusammenarbeit mit ausgewählten Restaurants soll dieses Software-System im kleineren Kreis getestet und ausgereift werden. Sobald die Kernprozesse über die technische Infrastruktur stabil und praxiserprobt laufen, können nächste Schritte geplant werden. Darunter würden weitere Prozesse und das Herantreten an weitere Restaurants fallen. 
 
- 
+Auch langfristig besteht erhebliches Potenzial für die Digitalisierung der Gastronomie und entsprechend weitere Pläne. Diese umfassen, dass Restaurants nicht manuell einen Account erstellen müssen, sondern automatisch integriert werden. Dabei sollen die Inhalte wie deren Speisekarte, Name und Telefonnummer durch Webscraping ermittelt werden. Sollten genügend Informationen gefunden werden, kann ein Phantomprofil erstellt werden, das mit dem Bestellprozess der Kunden kombiniert werden kann. Der Vorteil besteht darin, dass, wenn eine Bestellung erfolgt, ein \acs{KI}-gestützter Anruf oder Ähnliches an das Restaurant erfolgt, ohne dass es sich registriert hat und der Nutzer mehr machen muss, als das Anklicken der Gerichte, die er will. Ermöglichen kann dies aktuell schon das aktuelle OpenAI-Modell \citep[vgl.][]{openai_introducing_2024}. Somit können Restaurants Online-Bestellungen annehmen, ohne eigene Systeme dafür zu besitzen oder sich überhaupt damit auseinanderzusetzen. Das würde wiederum eine mühelose Skalierung ermöglichen, ohne großen Marketingaufwand. Auch für die Restaurants, die sich später registrieren möchten, ist dies von Nutzen, da sie bereits auf einer soliden Basis aufbauen können, weil möglichst viele Informationen bereits erfasst wurden.
+
+Weitere Möglichkeiten wären eine Art eine gestützte Speisekartengenerierung durch \acs{KI} oder Bestandsmanagement, das automatisch im Überblick hat, wann für welche Gerichte der Bestand ausgeht und entsprechend diese Gerichte von der Speisekarte streicht. Auch eine Art Gründerunterstützung ist zu denken, bei der für neue Gastronomen schon ein Großteil der bürokratischen Hürden abgebaut wird.
+r
+Wie die Details allerdings zur aktuellen Implementierung aussehen, konnte leider nicht mehr im Umfang der Hauptarbeit eingebracht werden, daher sind diese Details im Anhang einsehbar.

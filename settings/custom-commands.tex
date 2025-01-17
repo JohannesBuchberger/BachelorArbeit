@@ -13,9 +13,7 @@
 % ===========================================================================================
 % Sowas wie eine Sub-Sub-Sub-Section, diese wird nur nicht angezeigt im Inhaltsverzeichnis
 % ===========================================================================================
-\newcommand{\paragraphandnewline}[1]{\paragraph{#1}\mbox{}
-
-}
+\newcommand{\paragraphandnewline}[1]{\paragraph{#1}\mbox{}}
 
 % ===========================================================================================
 % vom \nameref package und \autoref vom hyperref package damit ein gescheid lesbare referenz ensteht 
@@ -50,9 +48,3 @@
     \label{fig:#3}
   \end{figure}
 }
-
-% ==========
-% allows to reference a \label
-% combines \ref and \nameref to create a properly readable link to the label
-% ==========
-\newcommand{\fullref}[1]{\hyperref[#1]{\ref*{#1}~\nameref*{#1}}}
