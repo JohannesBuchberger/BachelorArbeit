@@ -30,21 +30,24 @@
 % label: ref-link für die \ref commands, \fullref commands
 % captation: Der Text der optisch neben der oben beschriebenen Nummer steht
 % ===========================================================================================
+\newcommand{\figsource}[1]{\hfill{#1}} %command definition for sources in figures
 
-\newcommand{\abbildung}[4]{% [width]{file}{ref-label}{visible-caption}
+\newcommand{\abbildung}[5]{% [width]{file}{ref-label}{visible-caption}{source]
   \begin{figure}[htbp]
     \centering
     \includegraphics[width=#1]{#2}
-    \caption{#4}
+    \caption[#4]{#4}
     \label{fig:#3}
+    \figsource{#5}
   \end{figure}
 }
 
-\newcommand{\abbildungsvg}[4]{% [width]{file}{ref-label}{visible-caption}
+\newcommand{\abbildungsvg}[5]{% [width]{file}{ref-label}{visible-caption}{source}
   \begin{figure}[htbp]
     \centering
     \includesvg[width=#1]{#2}
-    \caption{#4}
+    \caption[#4]{#4}
     \label{fig:#3}
+    \figsource{#5}
   \end{figure}
 }

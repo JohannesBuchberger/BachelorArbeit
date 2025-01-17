@@ -103,8 +103,9 @@ Das Datenformat, das dafür im \ac{BPMN} 2.0-Standard für die Beschreibung der 
 \end{itemize}
 \citep[vgl.][S. 5]{bruce_bpmn_2012}
 
-\paragraphandnewline{Relevante \ac{BPMN} Symbole}  
-\abbildung{0.85\textwidth}{img/proc;Beispielprozess.png}{fig:tasks}{Beispielprozess (Eigengestaltung)}
+\paragraphandnewline{Relevante \ac{BPMN} Symbole}
+
+\abbildung{0.85\textwidth}{img/proc;Beispielprozess.png}{fig:tasks}{Beispielprozess}
 
 Um nachfolgende \ac{BPMN}-Modellierungen einfacher nachvollziehen zu können und den Einstieg und den Zusammenhang zwischen den nachfolgenden Symbolen zu vereinfachen, ist hier ein beispielhaftes \ac{BPMN} Modell dargestellt. Die hier gezeigten Symbole sind dabei nur ein kleines Subset der tatsächlich verfügbaren Symbole und sollen eine mögliche Anordnung zeigen. 
 
@@ -112,10 +113,10 @@ Nachfolgend werden alle vorkommenden \ac{BPMN}-Symbole aufgelistet. Orange gefä
 
 Nicht explizit erklärt, aber auch überall verwendet wird der verbindende Weg,  dieser wird ab jetzt Sequenzfluss genannt. Ein Sequenzfluss beschreibt dabei die Logik, in welcher Reihenfolge der Prozess umgesetzt wird. \citep[vgl.][S. 13]{bruce_englisch_2011} 
 
-\abbildung{0.3\textwidth}{img/spec:pool.png}{fig:pool}{Teilnehmer Pools \citep[][]{camunda_services_gmbh_bpmn_2024}}
-Das dargestellte Bild zeigt einen Pool. ''Pools'' gibt es dabei in zwei Geschmacksrichtungen, einmal als  White-Box-Pools und als Black-Box-Pools. Ein White-Box-Pool ist dabei ein Pool, in dessen Lanes ein Geschäftsprozess modelliert ist. Dabei werden die im Pool vorhandenen Lanes mit den Namen beschriftet. Auf den Lanes wird beschriftet, welche Rolle für die Abarbeitung der Aktivitäten in diesem Bereich zuständig ist. Sollten die Lanes eines Pools allerdings leer sein, beziehungsweise nicht vorhanden, spricht man von einem Black-Box-Pool. Das bedeutet im wesentlichen, dass nicht bekannt ist, was dort passiert. \citep[vgl.][S. 55]{bruce_bpmn_2012}
+\abbildung{0.3\textwidth}{img/spec:pool.png}{fig:pool}{Teilnehmer Pools}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
+Das dargestellte Bild zeigt einen Pool. ''Pools'' gibt es dabei in zwei Geschmacksrichtungen, einmal als  White-Box-Pools und als Black-Box-Pools. Ein White-Box-Pool ist dabei ein Pool, in dessen Lanes ein Geschäftsprozess modelliert ist. Dabei werden die im Pool vorhandenen Lanes mit den Namen beschriftet. Auf den Lanes wird beschriftet, welche Rolle für die Abarbeitung der Aktivitäten in diesem Bereich zuständig ist. Sollten die Lanes eines Pools allerdings leer sein, beziehungsweise nicht vorhanden, spricht man von einem Black-Box-Pool. Das bedeutet im Wesentlichen, dass nicht bekannt ist, was dort passiert. \citep[vgl.][S. 55]{bruce_bpmn_2012}
 
-\abbildung{0.8\textwidth}{img/spec:events.png}{fig:events}{BPMN Ereignisse \citep[][]{camunda_services_gmbh_bpmn_2024}}
+\abbildung{0.8\textwidth}{img/spec:events.png}{fig:events}{BPMN Ereignisse}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 
 In dieser Auflistung sind Symbole vom Typ Multiple und Parallel Multiple nicht vorhanden. Grund dafür ist, dass diese von der ausgewählten Prozess Engine Camunda, die später im Kapitel \fullref{sec:process_engine_auswahl} näher ausgeführt wird, nicht unterstützt werden.
 
@@ -128,45 +129,46 @@ Unter Start, Normal und None ist in der Abbildung das normale Startereignis zu f
 Der Gegensatz zu Starteereignissen stehen die End-Ereignisse. Die mit dem dicken Rand gekennzeichneten Symbole sind essenziell, um festzulegen, wann ein Prozess zu Ende geht. Das kann über verschiedene Arten passieren. Ein Prozess kann erfolgreich beendet werden oder auch mit einem Fehler. Das erlaubt es dann den darauf folgenden Prozessen, darauf zu reagieren, da diese auf die Endereignisse reagieren können. \citep[vgl.][S. 55f]{bruce_englisch_2011}
 
 Ein weiteres Ereignis ist das intermediate Escalationevent, auf Deutsch unterbrechendes Eskalationsevent. Damit würde signalisiert werden, dass im Prozess eine Ausnahmesituation eintritt. Verwendet wird dieses Event in dieser Arbeit in seiner ''start event subprocess escalation'', ''intermediate boundary escalation'' und ''end escalation'' Variante. Die ''start event subprocess escalation'' wird dabei verwendet, um eine zuvor geworfene Eskalation zu behandeln. Der Prozessschritt, an dem eine ''intermediate boundary escalation'' angeheftet ist, kann abgebrochen werden, solange er aktiv ist. Im Falle eines Abbruchs durch eine Eskalation wird der Sequenzfluss an der Position des Eskalationsevents fortgesetzt, statt dem ursprünglichen Sequenzfluss der Aktivität herauszufolgen. Zuletzt kommt noch die ''end escalation'', diese funktioniert wie ein normales End-Ereigniss. Hier wird der Sequenzfluss beendet und die Eskalation wird an den ummantelnden Prozess weitergegeben. \citep[vgl.][S. 107, 111f]{bruce_englisch_2011}
+
+Auch Nachrichtenereignisse wie ''message start event subprocess'' und ''message intermediate catch'' oder ''message intermediate boundary'' werden verwendet. Diese erlauben es dem Prozess, der diese verwendet, auf Nachrichten von außerhalb zu reagieren. Wie bei Eskalationsereignissen, wenn angeheftet an eine aktive Aktivität, wird die Aktivität beim Eintreffen einer Nachricht sofort abgebrochen und der Prozess folgt dem Sequenzfluss, der am Message Ereignis festgelegt wurde. Die anderen funktionieren von der Idee her genauso wie bei der Eskalationsvariante, nur dass das Auslösen durch eine Nachricht erfolgt und weniger einen Ausnahmefall impliziert. \citep[vgl.][S. 99f, 102]{bruce_englisch_2011}
+
+Das Endereignis für Error verhält sich genauso wie das Eskalationsereignis, allerdings ist nur die Bedeutung dahinter anders. Hier liegt der Fokus mehr darauf, dass es einen technischen Fehler gibt \citep[vgl.][S. 104ff]{bruce_englisch_2011}
+
+Die Timer Events, vor allem die ''timer intermediate boundary non-interrupt'' und ''timer intermediate boundary'' sowie ''timer intermediate catch'' Events, sind die letzten relevanten Events, welche in den späteren Prozessen verwendet werden. Diese funktionieren wie die anderen ''intermediate'' Events, nur mit dem Unterschied, dass diese durch einen Timer ausgelöst werden statt durch zum Beispiel eine Nachricht oder Eskalation. Auch neu ist hier das zum ersten Mal relevant gewordene ''timer intermediate boundary non-interrupt'' Event. Wenn dieses gestartet wird, wird die aktive Aktivität weiter ausgeführt, aber gleichzeitig wird auch noch ein zweiter Sequenzfluss beschritten und parallel zum Ursprungspfad ausgeführt. \citep[vgl.][S. 94]{bruce_englisch_2011}
+
+\abbildung{0.45\textwidth}{img/spec:data_artefacts.png}{fig:data_artefacts}{Data Artefacts}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
+''Data Artefacts'' sind Datenspeicher und stellen Informationseinheiten dar. Diese können entweder in einem externen System hinterlegt sein oder auch innerhalb eines Prozesses können die Daten verwaltet werden. Verbunden werden diese durch einen Datenfluss, der einfach nur widerspiegelt, wer von was liest, beziehungsweise schreibt. Allerdings ist keines der Symbole von der Prozess-Engine funktional unterstützt, wie ebenfalls im \fullref{sec:process_engine_auswahl} ausgeführt. Dennoch werden diese gegebenenfalls zu Dokumentationszwecken vereinzelt vorhanden sein. \citep[vgl.][S. 59]{bruce_bpmn_2012}
+
 %* Sequenzfluss ✅
 %* Externer Blackpool ✅
 %* Startereignis ✅
 %* Endereignis ✅
-%* startendes Eskalationsevent ✅
-%* unterbrechendes Eskalationsstartereignis ✅
-%* werfendes Eskalationsendereignis ✅
+% startendes Eskalationsevent ✅
+% unterbrechendes Eskalationsstartereignis ✅
+% werfendes Eskalationsendereignis ✅
+%* startendes Empfangsevent event-subprozess ✅
+%* unterbrechendes angeheftetes Nachrichtenevent ✅ 
+%* unterbrechendes Nachrichtenevent ✅
+% nicht unterbrechendes Timer-Event ✅
+% unterbrechendes angeheftetes Timerevent ✅
+%* werfendes beendendes Error-Event ✅
+% Datenobjekt ✅
+% Datenfluss ✅
 
-%* startendes Empfangsevent event-subprozess
-%* unterbrechendes angeheftetes Nachrichtenevent 
-%* unterbrechendes Nachrichtenevent
-
-%* nicht unterbrechendes Timer-Event
-%* unterbrechendes angeheftetes Timerevent
-
-%* eventbasiertes Gateway
-%* werfendes beendendes Error-Event
+% eventbasiertes Gateway
+%* aufteilendes Gateway
+%* zusammenführendes Gateway
+%* paralleles Gateway
 
 %* manual task
 %* text-annotation
 %* Call Process
 %* Service Task
 %* Human Task
-%* aufteilendes Gateway
-%* zusammenführendes Gateway
-%* Datenobjekt
-%* Datenfluss 
 %* Eventsubprozesse
 %* Sende Aktivität
 
-Auch Nachrichtenereignisse wie ''message start event subprocess'' ''message intermediate catch'' oder ''message intermediate boundary'' werden verwendet. Diese erlauben es dem Prozess, der diese verwendet \citep[vgl.][S. 102]{bruce}
-
-\abbildung{0.45\textwidth}{img/spec:data_artefacts.png}{fig:data_artefacts}{Data Artefacts \citep[][]{camunda_services_gmbh_bpmn_2024}}
-''Data Artefacts'' sind Datenspeicher und stellen Informationseinheiten dar. Diese können entweder in einem extra System hinterlegt werden. Auch innerhalb eines Prozesses können Daten verwaltet werden. Allerdings ist keines der Symbole von der Prozess Engine funktional unterstützt, wie ebenfalls im \fullref{sec:process_engine_auswahl} ausgeführt. Dennoch werden diese gegebenenfalls zu Dokumentationszwecken vereinzelt vorhanden sein. \citep[vgl.][S. 59]{bruce_bpmn_2012}
-
-
-
-
-\abbildung{0.45\textwidth}{img/spec:gateways.png}{fig:gateways}{Gateways \citep[][]{camunda_services_gmbh_bpmn_2024}}
+\abbildung{0.45\textwidth}{img/spec:gateways.png}{fig:gateways}{Gateways}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 ''Gateways'' steuern den Prozessfluss und entscheiden dabei, welche Pfade beschritten werden oder wo diese zusammengeführt werden.
 
 Ein Event Gateway kann dabei nur in Kombination mit Events genutzt werden. Dieses Gateway würde zum Beispiel bei zwei nachfolgenden Nachrichten Events, zuerst den Weg, auch Sequenzfluss genannt, einschlagen, bei dem die Nachricht zuerst zutrifft. \citep[vgl.][S. 46]{bruce_bpmn_2012}
@@ -174,14 +176,14 @@ Ein Event Gateway kann dabei nur in Kombination mit Events genutzt werden. Diese
 Ein exklusives datenbasiertes Gateway, oder alternativ kürzer XOR-Gateway, kann vereinend als auch teilend sein und dafür zuständig, bereits getroffene Entscheidungen auszuwerten. \citep[vgl.][S. 125f]{bruce_englisch_2011}. 
 
 \clearpage
-\abbildung{0.9\textwidth}{img/spec:subprocesses.png}{fig:subprocesses}{Unterprozesse \citep[][]{camunda_services_gmbh_bpmn_2024}}
+\abbildung{0.9\textwidth}{img/spec:subprocesses.png}{fig:subprocesses}{Unterprozesse}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 Wenn ein Prozess sich in mehrere Teilschritte aufteilen lässt, kann man die Aktivitäten dieser einzelnen Teilschritte in ''Unterprozesse'' darstellen. In BPMN wird dabei in verschiedene Arten unterschieden. \citep[vgl.][S. 41]{bruce_bpmn_2012}
 
 Beim eingebetteten Subprozess, welcher der Subprozess links mit dem dünnen Rand auf dem Bild ist, wird der Prozess in derselben Datei modelliert wie der Top-Level-Prozess selbst und dient vor allem dazu, eine bessere Top-down-Ansicht zu schaffen, indem gewisse logisch zusammenhängende Prozessschritte zusammengekapselt werden. Ein Subprozess ist aufgrund der Eigenschaft, innerhalb eines anderen Prozesses modelliert zu sein, ein Prozessschritt, der nicht wiederverwendbar in mehreren Prozessen verwendet werden kann. \citep[vgl.][S. 35, 37f]{bruce_englisch_2011}
 
 Eine andere Variante, Unterprozesse zu nutzen, ist eine Call Activity. Diese ist in der Regel dafür zuständig, einen wiederverwendbaren Unterprozess zu starten. Anzumerken ist dabei, dass der aufgerufene Unterprozess, anders als bei einem eingebetteten Unterprozess, in einer separaten Datei modelliert ist und eher semantisch impliziert, dass der Prozess auch an anderen Stellen, in anderen Prozessen verwendet wird. \citep[vgl.][S. 38f]{bruce_englisch_2011}
 
-\abbildung{0.9\textwidth}{img/spec:tasks.png}{fig:tasks}{Aufgaben, Aktivitäten \citep[][]{camunda_services_gmbh_bpmn_2024}}
+\abbildung{0.9\textwidth}{img/spec:tasks.png}{fig:tasks}{Aufgaben, Aktivitäten}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 Eine Aufgabe, Task oder auch Aktivität ist eine im Prozess geleistete Arbeitseinheit. Eine Aufgabe kann nicht mehr in weitere Elemente unterteilt werden. Der semantische Unterschied zwischen den Aufgaben wird durch das Icon, das die Bezeichnung des Tasktyps anzeigt, dargestellt und zeigt so, welche Bedeutung der Task zukommt. Im Falle einer User Task, auch Benutzer-Task, heißt dies, dass die Aufgabe nur mit Beteiligung oder ganz durch einen Menschen ausgeführt werden muss \citep[vgl.][S. 39ff]{bruce_bpmn_2012}.
 
 \subsubsection{\acl{CMMN}}
@@ -388,7 +390,7 @@ Die Randbedingungen um diesen Prozess sind relativ lose ohne Einschränkungen ge
 Ausgangsperson, welche diesen Prozess startet, ist der hungernde Kunde. Dieser sucht sich ein Restaurant, und hierbei kommen dann gegebenenfalls Köche, Küchengehilfen und gegebenenfalls Bedienungen ins Spiel. 
 
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc;SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Restaurantbestellung (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Restaurantbestellung}
 
 In der Modellierung des Prozesses folgen wir zunächst dem Happy Path, dabei ist Folgendes beim Startereignis zu erkennen: in diesem Fall, dass ein hungriger Kunde vorhanden ist.
 
@@ -430,7 +432,7 @@ Während die meisten Aufgaben, gerade Bezahlung, Bestellung und die Abholung des
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc;Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
 
 Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses wird über eine Call Activity der ''Bestellprozess'' gestartet. In diesem wird vom Kunden verlangt, dass er eine Bestellung aufgibt. 
 
@@ -457,7 +459,7 @@ Die hier beteiligten Prozessrollen sind einerseits das Restaurant und der Kunde.
 \subsubsection{Bestellprozess}
 \paragraphandnewline{Beteiligte Prozessrollen}
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc;Bestellprozess.png}{iref:Bestellprozess}{Bestellprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Bestellprozess.png}{iref:Bestellprozess}{Bestellprozess}
 
 
 
@@ -469,22 +471,23 @@ Im Zahlungsprozess soll durch eine Bestellung, beziehungsweise eine Liste aus zu
 \paragraphandnewline{Beteiligte Prozessrollen}
 \paragraphandnewline{Visualisierung des Prozessflusses}
 \clearpage
-\abbildung{1\textwidth}{img/proc;Zahlungsprozess.png}{iref:Zahlungsprozess}{Zahlungsprozess (Eigengestaltung)}
-\abbildung{1\textwidth}{img/proc;Zahlungsvorbereitungsprozess.png}{iref:Zahlungsvorbereitungsprozess}{Zahlungsvorbereitungsprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Zahlungsprozess.png}{iref:Zahlungsprozess}{Zahlungsprozess}
+
+\abbildung{1\textwidth}{img/proc;Zahlungsvorbereitungsprozess.png}{iref:Zahlungsvorbereitungsprozess}{Zahlungsvorbereitungsprozess}
 
 \paragraphandnewline{Beschreibung des Datenflusses}
 
 \subsubsection{Zubereitungsprozess}
 \clearpage
-\abbildung{1\textwidth}{img/proc;Zubereitungsprozess.png}{iref:Zubereitungsprozess}{Zubereitungsprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Zubereitungsprozess.png}{iref:Zubereitungsprozess}{Zubereitungsprozess}
 
 \subsubsection{Abholungsprozess}
 \clearpage
-\abbildung{1\textwidth}{img/proc;Abholungsprozess.png}{iref:Abholungsprozess}{Abholungsprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Abholungsprozess.png}{iref:Abholungsprozess}{Abholungsprozess}
 
 \subsubsection{Zahlungsrückabwicklungsprozess}
 \clearpage
-\abbildung{1\textwidth}{img/proc;Zahlungsrückabwicklungsprozess.png}{iref:Zahlungsrückabwicklungsprozess}{Zahlungsrückabwicklungsprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;Zahlungsrückabwicklungsprozess.png}{iref:Zahlungsrückabwicklungsprozess}{Zahlungsrückabwicklungsprozess}
 
 % =================================
 % = Main Process
@@ -499,7 +502,7 @@ Die Person, die in diesem Prozess konkret Aufgaben übernehmen kann, ist diejeni
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc;SpeisekartenEditierProzess.png}{iref:Speisekarteneditierprozess}{Speisekarteneditierprozess (Eigengestaltung)}
+\abbildung{1\textwidth}{img/proc;SpeisekartenEditierProzess.png}{iref:Speisekarteneditierprozess}{Speisekarteneditierprozess}
 
 \paragraphandnewline{Detailinformationen zu den Prozessschritten}
 Hierbei wird sich an der 
@@ -512,10 +515,10 @@ Was passiert mit den Prozessdaten,  Klassendiagramm!
 \label{sec:technologie_prozesse}
 \subsection{Datenmodell}
 \label{sec:datenmodell}
-\abbildung{1\textwidth}{img/uml;order_datenmodell.png}{iref:orderDatabase}{Order Datenbank (Eigengestaltung)}
+\abbildung{1\textwidth}{img/uml;order_datenmodell.png}{iref:orderDatabase}{Order Datenbank}
 
 \subsection{Architektur}
-\abbildung{1\textwidth}{img/uml;Architekturdiagramm}{iref:architekturdiagramm}{Architekturdiagramm (Eigengestaltung)}
+\abbildung{1\textwidth}{img/uml;Architekturdiagramm}{iref:architekturdiagramm}{Architekturdiagramm}
 
 \subsubsection{Asynchrone Kommunikation durch Queuing Systeme}
 \subsubsection{Backend Java Frameworks Quarkus und Springboot}
@@ -529,5 +532,5 @@ In Zusammenarbeit mit ausgewählten Restaurants soll dieses Software-System im k
 Auch langfristig besteht erhebliches Potenzial für die Digitalisierung der Gastronomie und entsprechend weitere Pläne. Diese umfassen, dass Restaurants nicht manuell einen Account erstellen müssen, sondern automatisch integriert werden. Dabei sollen die Inhalte wie deren Speisekarte, Name und Telefonnummer durch Webscraping ermittelt werden. Sollten genügend Informationen gefunden werden, kann ein Phantomprofil erstellt werden, das mit dem Bestellprozess der Kunden kombiniert werden kann. Der Vorteil besteht darin, dass, wenn eine Bestellung erfolgt, ein \acs{KI}-gestützter Anruf oder Ähnliches an das Restaurant erfolgt, ohne dass es sich registriert hat und der Nutzer mehr machen muss, als das Anklicken der Gerichte, die er will. Ermöglichen kann dies aktuell schon das aktuelle OpenAI-Modell \citep[vgl.][]{openai_introducing_2024}. Somit können Restaurants Online-Bestellungen annehmen, ohne eigene Systeme dafür zu besitzen oder sich überhaupt damit auseinanderzusetzen. Das würde wiederum eine mühelose Skalierung ermöglichen, ohne großen Marketingaufwand. Auch für die Restaurants, die sich später registrieren möchten, ist dies von Nutzen, da sie bereits auf einer soliden Basis aufbauen können, weil möglichst viele Informationen bereits erfasst wurden.
 
 Weitere Möglichkeiten wären eine Art eine gestützte Speisekartengenerierung durch \acs{KI} oder Bestandsmanagement, das automatisch im Überblick hat, wann für welche Gerichte der Bestand ausgeht und entsprechend diese Gerichte von der Speisekarte streicht. Auch eine Art Gründerunterstützung ist zu denken, bei der für neue Gastronomen schon ein Großteil der bürokratischen Hürden abgebaut wird.
-r
+
 Wie die Details allerdings zur aktuellen Implementierung aussehen, konnte leider nicht mehr im Umfang der Hauptarbeit eingebracht werden, daher sind diese Details im Anhang einsehbar.
