@@ -139,52 +139,32 @@ Die Timer Events, vor allem die ''timer intermediate boundary non-interrupt'' un
 \abbildung{0.45\textwidth}{img/spec:data_artefacts.png}{fig:data_artefacts}{Data Artefacts}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 ''Data Artefacts'' sind Datenspeicher und stellen Informationseinheiten dar. Diese können entweder in einem externen System hinterlegt sein oder auch innerhalb eines Prozesses können die Daten verwaltet werden. Verbunden werden diese durch einen Datenfluss, der einfach nur widerspiegelt, wer von was liest, beziehungsweise schreibt. Allerdings ist keines der Symbole von der Prozess-Engine funktional unterstützt, wie ebenfalls im \fullref{sec:process_engine_auswahl} ausgeführt. Dennoch werden diese gegebenenfalls zu Dokumentationszwecken vereinzelt vorhanden sein. \citep[vgl.][S. 59]{bruce_bpmn_2012}
 
-%* Sequenzfluss ✅
-%* Externer Blackpool ✅
-%* Startereignis ✅
-%* Endereignis ✅
-% startendes Eskalationsevent ✅
-% unterbrechendes Eskalationsstartereignis ✅
-% werfendes Eskalationsendereignis ✅
-%* startendes Empfangsevent event-subprozess ✅
-%* unterbrechendes angeheftetes Nachrichtenevent ✅ 
-%* unterbrechendes Nachrichtenevent ✅
-% nicht unterbrechendes Timer-Event ✅
-% unterbrechendes angeheftetes Timerevent ✅
-%* werfendes beendendes Error-Event ✅
-% Datenobjekt ✅
-% Datenfluss ✅
-
-% eventbasiertes Gateway
-%* aufteilendes Gateway
-%* zusammenführendes Gateway
-%* paralleles Gateway
-
-%* manual task
-%* text-annotation
-%* Call Process
-%* Service Task
-%* Human Task
-%* Eventsubprozesse
-%* Sende Aktivität
-
 \abbildung{0.45\textwidth}{img/spec:gateways.png}{fig:gateways}{Gateways}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 ''Gateways'' steuern den Prozessfluss und entscheiden dabei, welche Pfade beschritten werden oder wo diese zusammengeführt werden.
 
-Ein Event Gateway kann dabei nur in Kombination mit Events genutzt werden. Dieses Gateway würde zum Beispiel bei zwei nachfolgenden Nachrichten Events, zuerst den Weg, auch Sequenzfluss genannt, einschlagen, bei dem die Nachricht zuerst zutrifft. \citep[vgl.][S. 46]{bruce_bpmn_2012}
+Ein Event Gateway kann dabei nur in Kombination mit Events genutzt werden. Ein solches Gateway würde zum Beispiel, sobald auf zwei nachfolgende Nachrichten Events gewartet wird, zuerst den Weg einschlagen, bei dem die Nachricht zuerst zutrifft. \citep[vgl.][S. 46]{bruce_bpmn_2012}
 
-Ein exklusives datenbasiertes Gateway, oder alternativ kürzer XOR-Gateway, kann vereinend als auch teilend sein und dafür zuständig, bereits getroffene Entscheidungen auszuwerten. \citep[vgl.][S. 125f]{bruce_englisch_2011}. 
+Ein exklusives datenbasiertes Gateway, oder alternativ kürzer XOR-Gateway, kann vereinen als auch teilen sein und dafür zuständig, bereits getroffene Entscheidungen auszuwerten. \citep[vgl.][S. 125f]{bruce_englisch_2011}
 
-\clearpage
+Parallele Gateways, in der Abbildung als ''AND'' Gateway zu finden, ermöglichen es, dass ein Prozess parallel mehrere Aktivitäten abarbeiten kann. Anzumerken ist dabei, dass ein Prozess erst dann beendet ist, wenn alle Aktivitäten eingestellt wurden. Aufgrund der asynchronen Natur des ''AND'' Gateways müssen die Pfade auch besonders zusammengeführt werden, das wird aber in dieser Arbeit nicht relevant werden. \citep[vgl.][S. 41]{bruce_englisch_2011}
+
 \abbildung{0.9\textwidth}{img/spec:subprocesses.png}{fig:subprocesses}{Unterprozesse}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 Wenn ein Prozess sich in mehrere Teilschritte aufteilen lässt, kann man die Aktivitäten dieser einzelnen Teilschritte in ''Unterprozesse'' darstellen. In BPMN wird dabei in verschiedene Arten unterschieden. \citep[vgl.][S. 41]{bruce_bpmn_2012}
 
-Beim eingebetteten Subprozess, welcher der Subprozess links mit dem dünnen Rand auf dem Bild ist, wird der Prozess in derselben Datei modelliert wie der Top-Level-Prozess selbst und dient vor allem dazu, eine bessere Top-down-Ansicht zu schaffen, indem gewisse logisch zusammenhängende Prozessschritte zusammengekapselt werden. Ein Subprozess ist aufgrund der Eigenschaft, innerhalb eines anderen Prozesses modelliert zu sein, ein Prozessschritt, der nicht wiederverwendbar in mehreren Prozessen verwendet werden kann. \citep[vgl.][S. 35, 37f]{bruce_englisch_2011}
+Eine Variante, die Unterprozesse zu nutzen, ist eine Call Activity. Diese ist in der Regel dafür zuständig, einen wiederverwendbaren Unterprozess zu starten. Anzumerken ist dabei, dass der aufgerufene Unterprozess, anders als bei einem eingebetteten Unterprozess, in einer separaten Datei modelliert ist und eher semantisch impliziert, dass der Prozess auch an anderen Stellen, in anderen Prozessen verwendet wird. \citep[vgl.][S. 38f]{bruce_englisch_2011}
 
-Eine andere Variante, Unterprozesse zu nutzen, ist eine Call Activity. Diese ist in der Regel dafür zuständig, einen wiederverwendbaren Unterprozess zu starten. Anzumerken ist dabei, dass der aufgerufene Unterprozess, anders als bei einem eingebetteten Unterprozess, in einer separaten Datei modelliert ist und eher semantisch impliziert, dass der Prozess auch an anderen Stellen, in anderen Prozessen verwendet wird. \citep[vgl.][S. 38f]{bruce_englisch_2011}
+Auch gibt es den eingebetteten Subprozess, welcher der Subprozess links mit dem dünnen Rand auf der Abbildung ist. Damit wird der Unterprozess in derselben Datei modelliert wie der Top-Level-Prozess selbst und dient vor allem dazu, eine bessere Top-down-Ansicht zu schaffen. Dabei werden gewisse logisch zusammenhängende Prozessschritte zusammengezogen. Ein Subprozess ist aufgrund der Eigenschaft, innerhalb eines anderen Prozesses modelliert zu sein, ein Prozessschritt, der nicht wiederverwendbar in mehreren Prozessen verwendet werden kann. \citep[vgl.][S. 35, 37f]{bruce_englisch_2011}
+
+Ein Event-Subprozess ist wiederum die Stelle im Prozess, in welcher die Ausnahmeflussbehandlung stattfindet. Diese funktioniert im Prinzip wie ein Boundary Event, nur dass es immer ausgelöst werden kann und damit mehrere Prozessschritte umfassen kann. \citep[vgl.][S. 111f]{bruce_englisch_2011}
 
 \abbildung{0.9\textwidth}{img/spec:tasks.png}{fig:tasks}{Aufgaben, Aktivitäten}{\citep[][]{camunda_services_gmbh_bpmn_2024}}
 Eine Aufgabe, Task oder auch Aktivität ist eine im Prozess geleistete Arbeitseinheit. Eine Aufgabe kann nicht mehr in weitere Elemente unterteilt werden. Der semantische Unterschied zwischen den Aufgaben wird durch das Icon, das die Bezeichnung des Tasktyps anzeigt, dargestellt und zeigt so, welche Bedeutung der Task zukommt. Im Falle einer User Task, auch Benutzer-Task, heißt dies, dass die Aufgabe nur mit Beteiligung oder ganz durch einen Menschen ausgeführt werden muss \citep[vgl.][S. 39ff]{bruce_bpmn_2012}.
+
+Neben der User Task gibt es die Manual Task, die mit einem Handsymbol gekennzeichnet ist. Eine manuelle Aufgabe bedeutet, dass etwas erledigt werden muss, das keine Verbindung zur Workflow-Engine oder sonstige technische Eingaben benötigt. \citep[vgl.][S. 34]{bruce_englisch_2011}
+
+Eine Service-Task bedeutet, dass diese Aufgabe komplett automatisch durchgeführt wird, ohne jegliches menschliches Eingreifen. \citep[vgl.][S. 21]{bruce_englisch_2011}
+
+Das letzte genutzte \ac{BPMN} Element ist die Send Task. Diese hat zur Aufgabe, dass eine Nachricht beim Betreten der Aktivität gesendet wird. \citep[vgl.][S. 95]{bruce_englisch_2011}
 
 \subsubsection{\acl{CMMN}}
 
@@ -348,9 +328,9 @@ Um dies zu erreichen, müssten einheitliche digitalisierte Standardprozesse für
 
 \subsection{Modellierung der Gastronomieprozesse nach dem \acl{PDA}}
 \label{sec:modellierung}
-Zu Beginn der Modellierung ist festzuhalten, dass es das Ziel dieser Arbeit ist, das Verwalten für den Gastronomen und den Arbeitsablauf der Köche und Bedienungen zu vereinfachen, sondern auch im weiteren Schritt für die Kunden.
+Zu Beginn der Modellierung ist erneut festzuhalten, dass die Ziele dieser Arbeit nicht nur das Vereinfachen der Verwaltung für den Gastronomen und die Verbesserung des Arbeitsablaufs für die Köche und Bedienungen umfasst. Auch soll im weiteren Schritt das Einkaufserlebnis für die Kunden optimiert werden.
 
-Die folgenden Kern-Prozesse wurden ebenfalls unter anderem identifiziert. 
+Aus der Kommunikation mit den Gastronomen wurden die folgenden Kern-Prozesse unter anderem identifiziert. 
 
 \begin{itemize}
     \item Verwaltungsprozess zum Bearbeiten der Speisekarten
@@ -358,9 +338,9 @@ Die folgenden Kern-Prozesse wurden ebenfalls unter anderem identifiziert.
     \item Selbstbedienungsrestaurantprozess
 \end{itemize}
 
-Auch andere Kern-Prozesse wurden identifiziert, allerdings sind diese nicht Teil dieser Bachelorarbeit, da diese in Kooperation entstanden sind. Die hier zusätzlich aufgelisteten Prozesse werden dabei in der Arbeit von \cite{ott_konzeption_2025} im Kapitel Prozessmodellierung behandelt und werden gegebenenfalls in den nachfolgenden Kapiteln referenziert. 
+Auch andere Kern-Prozesse wurden identifiziert, allerdings sind diese nicht Teil dieser Bachelorarbeit, da diese in Kooperation entstanden sind. Die hier zusätzlich aufgelisteten Prozesse werden dabei in der Arbeit von \cite{ott_konzeption_2025} im Kapitel Prozessmodellierung behandelt und könnten gegebenenfalls in den nachfolgenden Kapiteln referenziert werden. 
 
-Umfassend werden also folgende Prozesse nicht in dieser Arbeit behandelt: 
+Die anderen Kern-Prozesse, welche folglich nicht in dieser Arbeit behandelt werden, sind: 
 \begin{itemize}
     \item Verwaltungsprozess zum Anlegen der Stamminformationen
     \item Verwaltungsprozess zum Onboarding von Restaurants
@@ -368,7 +348,7 @@ Umfassend werden also folgende Prozesse nicht in dieser Arbeit behandelt:
     \item Bedienungsprozess für Bedienrestaurants
 \end{itemize}
 
-Ebenfalls wird dieser Stelle nochmal an \fullref{par:spezifikation_von_prozessgesteuerten_anwendungen} verwiesen, hier wurde das nachfolgende Vorgehen bereits grundlegend erklärt und wird nun für jeden der folgenden Prozesse angewendet.
+Ebenfalls wird dieser Stelle nochmal an \fullref{par:spezifikation_von_prozessgesteuerten_anwendungen} verwiesen, hier wurde das nachfolgende Vorgehen bereits grundlegend erklärt und wird nun für jeden der folgenden Prozesse, sofern sich daraus erarbeitete Informationen nicht doppeln, angewendet.
 
 % =================================
 % = Main Process
@@ -387,33 +367,31 @@ Damit die einzelnen Prozesse miteinander funktionieren, ist es notwendig, dass d
 Die Randbedingungen um diesen Prozess sind relativ lose ohne Einschränkungen gestaltet. Gestartet werden kann dieser Prozess zu jedem beliebigen Zeitpunkt und auch sonst gibt es kaum Einschränkungen. Ziel ist es ja, dass dieser Prozess möglichst zugänglich ist.
 
 \paragraphandnewline{Beteiligte Prozessrollen}
-Ausgangsperson, welche diesen Prozess startet, ist der hungernde Kunde. Dieser sucht sich ein Restaurant, und hierbei kommen dann gegebenenfalls Köche, Küchengehilfen und gegebenenfalls Bedienungen ins Spiel. 
+Die Ausgangsperson, welche diesen Prozess startet, ist der hungernde Kunde. Dieser sucht sich dabei über eine App ein Restaurant aus. Erst danach kommen dann gegebenenfalls andere Rollen wie Köche, Küchengehilfen und gegebenenfalls Bedienungen ins Spiel. Welche Rollen dies genau sind, ist an der jetzigen Stelle noch irrelevant, da diese erst in den Unterprozessen thematisiert werden. 
 
+\clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
 \abbildung{1\textwidth}{img/proc;SpeiseMain.png}{iref:SpeiseMain}{Top-Level-Prozess für die Restaurantbestellung}
 
-In der Modellierung des Prozesses folgen wir zunächst dem Happy Path, dabei ist Folgendes beim Startereignis zu erkennen: in diesem Fall, dass ein hungriger Kunde vorhanden ist.
 
-Der Sequenzfluss läuft daraufhin in ein zusammenführendes XOR-Gateway, welches bei der ausschließlichen Betrachtung des Happy Paths noch nicht relevant ist und daher fürs Erste ignoriert werden kann. Wie zu sehen ist, landet der Sequenzfluss nun in einer Call Activity. Diese Stelle im Prozess kennzeichnet somit den Start des Restaurantfindungsprozesses.
-Die Gründe, warum hierbei auf eine Call Activity und nicht auf einen eingebetteten Subprozess zurückgegriffen wurde, sind dabei wie folgt. Anders als in einer Call Activity ist es in eingebetteten Subprozessen nicht möglich, einen Pool mit Lanes zu modellieren. Ein eingebetteter Subprozess ist nur ein ausführlicher Teilschritt, daher ist es auch nicht vorgesehen. Ein weiterer Vorteil ist, dass dabei eine parallele Entwicklung vereinfacht wird, da jeder an seinem Prozess feilen kann, ohne gegebenenfalls den Fortschritt des jeweils anderen zu beeinflussen. Um sicherzustellen, dass das Ganze funktioniert, werden bereits im Vorherein Schnittstellen zwischen den Prozessen definiert. Also, was der Unterprozess dem Top-Level-Prozess zurückgeben muss, beziehungsweise welche Eingangsparameter dieser benötigt. Was bei einem weiteren Blick auf das Prozessmodell ebenfalls auffällt, ist, dass gewisse Call Activities rot markiert sind. Die rote Markierung ist da, um hervorzuheben, dass diese Prozessschritte nicht Teil dieser Arbeit sind und daher nicht oder nur oberflächlich behandelt werden.
+In den nachfolgenden Modellierungen der Prozesse folgen wir zunächst also dem Happy Path. In diesem Fall wird der Prozess entsprechend damit gestartet, dass ein hungriger Kunde vorhanden ist. Zu Beginn muss sich der Kunde entscheiden, in welches Restaurant er gehen will. Diese Aufgabe ist in der Call Activity ''Restaurantfindungsprozess'' wiedergespiegelt und wird in dieser Arbeit, wie vorher bereits erläutert, nicht tiefer erklärt. 
 
-Nach Abschluss dieses Unterprozesses wird automatisch, programmatisch durch eine Service Task entschieden, ob das resultierende ausgewählte Restaurant ein Selbstbedienungsrestaurant ist oder ein Restaurant, welches Bedienungen beschäftigt. Der Selbstbedienungsrestaurant-Unterprozess wird aufgrund seiner Relevanz und Komplexität im nachfolgenden \fullref{sec:selbstbedienungsrestaurantunterprozess} behandelt.
+Die Gründe, warum hierbei auf eine Call Activity und nicht auf einen eingebetteten Subprozess zurückgegriffen wurde, sind dabei wie folgt. Anders als in einer Call Activity ist es in eingebetteten Subprozessen nicht möglich, einen Pool mit Lanes zu modellieren. Ein eingebetteter Subprozess ist nur ein ausführlicher Teilschritt, daher ist das auch nicht von \ac{BPMN} 2.0 vorgesehen. Ein weiterer Vorteil ist, dass eine parallele Entwicklung vereinfacht wird, da jeder Entwickler an seinem Prozess feilen kann, ohne gegebenenfalls den Fortschritt des jeweils anderen zu beeinflussen. Um sicherzustellen, dass das Ganze funktioniert, werden bereits im Vorherein Schnittstellen zwischen den Prozessen definiert. Also das, was der Unterprozess ''Restaurantfindungsprozess'' dem Top-Level-Prozess zurückgeben muss, beziehungsweise ebenfalls, welche Eingangsparameter dieser benötigt. Was auch bei einem weiteren Blick auf das Prozessmodell ebenfalls auffällt, ist, dass gewisse Call Activities rot markiert sind. Die rote Markierung ist da, um hervorzuheben, dass diese Prozessschritte nicht Teil dieser Arbeit sind und daher nicht oder nur oberflächlich behandelt werden. Auch bei allen anderen roten Schritten ist dies der Fall.
 
+Nach Abschluss des Unterprozesses 'Restaurantfindungsprozesses' muss für den weiteren Bestellungsablauf entschieden werden, ob ein Bestellprozess für ein Selbstbedienungsrestaurant oder für ein Bedienungsrestaurant notwendig ist. Entsprechend wird in einer Service Task ''Restauranttyp feststellen'' automatisch, programmatisch entschieden, ob das resultierende ausgewählte Restaurant ein Selbstbedienungsrestaurant ist oder ein Restaurant, welches Bedienungen beschäftigt. 
 
-Das darauf folgende XOR-Gateway teilt den Sequenzfluss abhängig vom Ergebnis der Service Task in Richtung des Selbstbedienungsrestaurant Prozess oder des Bedienungsrestaurant Prozess auf. Diese werden aus denselben Gründen wie beim vorigen Subprozess als Call Activity gestartet. Zum Schluss, nachdem der jeweilige Restaurant-Unterprozess abgeschlossen wurde, endet der Top-Level-Prozess dann mit einem nicht mehr hungrigen Kunden.
+Das darauf folgende XOR-Gateway ''Ist Selbstbedienungsrestaurant?'' wertet das Ergebnis der Service Task aus. Daraufhin wird der Sequenzfluss entweder in Richtung des ''Selbstbedienungsprozess'' über den ''Ja'' Fluss oder über den ''Nein'' Fluss zum ''Bedienungsrestaurantprozess'' geleitet. Diese beiden Unterprozesse werden aus denselben Gründen wie beim vorigen Subprozess als Call Activity gestartet.
 
-Nachdem der Beleuchtung des Happy Paths, kommt es nun zur Ausnahmebehandlung. Hierbei ist auf die beiden angehefteten Events, welche bei den Call Activities anhängen, zu verweisen. Beide sollen das Ausnahmeszenario, bei dem ein Nutzer sich doch noch für ein anderes Restaurant umentscheidet, nachspielen. Diese beiden angehefteten unterbrechenden Eskalationsevents führen entsprechend den Kunden wieder zurück bis vor den Restaurantfindungsprozess, weil dieser Prozess auch zur Aufgabe hat, dass der Kunde sein Restaurant auswählt.
-
-Auf wie in \fullref{par:spezifikation_von_prozessgesteuerten_anwendungen} beschrieben, wird auf die optionale Ergänzung von Nachrichtenflüssen an dieser Stelle vorerst verzichtet, um die Komplexität des Prozesses zu reduzieren und weil es keine wirklichen Schnittstellen zu externen Systemen gibt.
+In diesen Prozessen hat der Kunde die Möglichkeit, sein Essen zu bestellen und zu bezahlen. Nachdem der Kunde den jeweiligen Restaurant-Unterprozess abgeschlossen hat, endet der Top-Level-Prozess dann mit einem nicht mehr hungrigen Kunden.
 
 \paragraphandnewline{Beschreibung des Datenflusses}
 Entsprechend dem ARIS-Modell wurden die Organisationssicht, also wer was macht, die Funktionssicht, also was gemacht wird, und die Steuerungssicht, also der Ablauf, beantwortet. Jetzt fehlt nur noch die Datensicht, also womit was gemacht wird. \citep[vgl.][]{lackes_aris_2025}
 
-Um zu dieser zu kommen, werden zunächst die Geschäftsobjekte betrachtet, die in diesem Prozess von Relevanz sind. Diese sind hier nur der Kunde und ein Restaurant.
+Wie in \fullref{par:spezifikation_von_prozessgesteuerten_anwendungen} ausgeführt, werden nun die Nachrichtenflüsse zu diesem Prozess an dieser Stelle beschrieben. Um eine gewisse Schnittstelle zwischen den Prozessen zu dokumentieren, ist dies auch absolut notwendig. Auch damit diese unabhängig entwickelt werden können. 
 
-Diese Geschäftsobjekte werden konkret, nachdem der Restaurantfindungsprozess durchgelaufen ist, herausgegeben. Hervorgehoben im Diagramm werden diese durch das Data Object Symbol. Einerseits soll das ausgewählte Restaurant und welcher Kunde für die Bestellung verantwortlich ist, dem Top-Level-Prozess zur Verfügung gestellt werden. Die Information darüber, wer dieser Kunde ist, ist optional, weil ein Kunde, der noch keinen Account hat, an dieser Stelle noch nicht blockiert werden soll. Wie der Datenfluss zeigt, werden diese beiden Geschäftsobjekte dann von den beiden Restaurantprozessen genutzt.
+Die beiden wichtigsten Geschäftsobjekte, die aber die meiste Zeit gemeinsam betrachtet werden können, weil diese auch meistens in Kombination verwendet werden, lauten ''Ausgewähltes Restaurant und Kunde''. Der ''Restaurantfindungsprozess'' resultiert nach seinem Durchlauf in dieses. Daher sind diese zur Übersichtlichkeit in einem data object symbol dargestellt. Das ausgewählte Restaurant und welcher Kunde für die Bestellung verantwortlich ist, soll dem Top-Level-Prozess zur Verfügung gestellt werden. Die Information darüber, wer dieser Kunde ist, ist dabei optional, weil ein Kunde, der noch keinen Account hat, an dieser Stelle noch nicht blockiert werden soll. Auch zeigt der Datenfluss, dass jeder andere Unterprozess und jede Aktivität ansonsten nur auf diese Daten lesend zugreift.
 
-Um nicht jedes Mal Anpassungen im Laufe der nächsten Prozessbeschreibungen ein Datenmodell aufführen zu müssen, wird ein einheitliches Datenmodell mit der Aufschlüsselung der Geschäftsobjekte am Ende für alle Prozesse in \fullref{sec:datenmodell} zu finden sein.
+Um nicht jedes Mal Anpassungen im Laufe der nächsten Prozessbeschreibungen an einem Datenmodell aufführen zu müssen, wird ein einheitliches Datenmodell mit der Aufschlüsselung der Geschäftsobjekte am Ende für alle Prozesse in \fullref{sec:datenmodell} zu finden sein.
 
 % =================================
 % = Selbstbedienungsrestaurantprozess
@@ -424,44 +402,50 @@ Um die in \fullref{sec:problemverstaendnis_gastronomie} beschriebenen Probleme v
 
 Gerade bei der Bezahlung, beziehungsweise wann diese notwendig ist, soll viel Freiraum lassen, damit der Gastronom dies für sich passend gestalten kann.
 
-Um den Prozess zu starten, ist es unbedingt notwendig, das Geschäftsobjekt über das Restaurant, welches im Zentrum hineingeben wird, anzugeben. Andernfalls soll der Prozess jederzeit startbar sein und hat daher keine weiteren Einschränkungen.
+Um den Prozess zu starten, ist es daher unbedingt notwendig, das Geschäftsobjekt über das Restaurant, welches im Top-Level-Prozess entstanden ist, hineinzugeben. Dabei soll der Prozess auch jederzeit aus seinem umgreifenden Top-Level-Prozess startbar sein.
 
 \paragraphandnewline{Beteiligte Prozessrollen}
-Die relevanten Rollen hierbei sind der speisende Kunde und das Restaurant.
-Während die meisten Aufgaben, gerade Bezahlung, Bestellung und die Abholung des Essens, fast ausschließlich, bis auf wenige Ausnahmen, vom Kunden zu erledigen sind, ist der Kochvorgang vollständig auf Seiten des Restaurants durchzuführen.
+Die hier relevanten Rollen hierbei sind der speisende Kunde und das Restaurant.
+Während die meisten Aufgaben, gerade Bezahlung, Bestellung und die Abholung des Essens, fast ausschließlich, bis auf wenige Ausnahmen, vom Kunden zu erledigen sind, ist der Kochvorgang vollständig auf Seiten des Restaurants durchzuführen. Das Restaurant beinhaltet an dieser Stelle als Rolle auch die Person, welche Bedienungen zur Essensannahme, sofern diese existieren, hat. Es wurde aber ein generellerer Name gewählt, da alle Aufgaben, die hier aus Sicht des Restaurants zu erledigen sind, auch von einer einzigen Person erledigbar sein sollen. 
+
+\paragraphandnewline{Visualisierung des Prozessflusses}
+\abbildung{0.8\textwidth}{img/proc;Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
+
+
+Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses kommt der Kunde und hat seinen Selbstbedienungswunsch. Um diesen zu erfüllen, muss dieser zuerst über eine Call Activity, die den ''Bestellprozess'' startet, eine Bestellung auswählen. 
+
+Nachdem dieser dort seine Bestellung aufgegeben hat, wird im ''Zahlungsprozess'' zunächst geprüft, ob hier schon eine Zahlung durchgeführt werden soll. Falls ja, würde hier vom Kunden gezahlt werden, falls nein, würde erst zu einer späteren Stelle gezahlt werden. Grund dafür, warum hier gezahlt werden soll, wäre zum Beispiel, wenn ein Restaurant nur schon sicher gezahlte Online-Bestellungen entgegennehmen will. Ein Grund, der dagegen spricht, wäre zum Beispiel, wenn man bei einer Art Kiosk oder Biergarten online bestellen kann, aber das Essen dabei erst zahlen muss, sobald man es von der Theke abholt. Die Gestaltungsfreiheit soll hier den Gastronomen überlassen werden.
+
+Nach der erfolgreichen Zahlung oder der nicht benötigten Zahlung wird die Bestellung an das Restaurant weitergeleitet. Jetzt kommt das Restaurant in die Aufgabe, sich im Rahmen des ''Zubereitungsprozess'' um die Bestellung zu kümmern. Hier kommt der Rollenwechsel entsprechend zum Restaurant, da es hier nur Aufgaben für das Restaurant gibt. 
+
+Sobald das Essen fertig ist, kann das Restaurant im Rahmen des zweiten ''Zahlungsprozess'' bereits vor der Abholung eine Zahlung verlangen. Das geht, solange nicht schon bei der Bestellung bezahlt werden musste. Das kann zum Beispiel notwendig sein, wenn ausschließlich Barzahlung erlaubt ist, aber online bestellt wurde. Der hier ausgeführte Unterprozess ''Zahlungsprozess'' ist dabei exakt derselbe, wie der am Anfang. Dieser ist so generisch definiert, dass es egal ist, wo dieser verwendet wird.
+
+Nachdem der Kunde auch hier entweder gezahlt hat, oder dies nicht musste, wird der ''Abholungsprozess'' eingeleitet. Nachdem der Kunde das Essen abgeholt hat, kann dieser, sofern er innerhalb des Restaurants isst und er noch nicht zahlen musste, nach dem Essen zahlen. Diese Stelle im Prozess ist so gestaltet, dass auch theoretisch nach dem Abholen auch ohne Vorortessen gezahlt werden kann. Das Verhalten hier unterscheidet sich im Zahlungsaspekt nicht voneinander. In jedem Fall ist das allerdings die letzte Möglichkeit, für den Gastronomen eine Zahlung zu verlangen. Bevor der Prozess mit einer ''Selbstbedienung durchgeführt'' endet.
+
+Gerade bei der Ausnahmepfad Betrachtung ist festzustellen, dass es 2 Eventsubprozesse gibt. In einem der beiden Eventsubprozesse wird die Ausnahmebehandlung für das Eskalationsereignis der ''Stornierung'' behandelt. Eine Stornierungseskalation kann dabei bei der Bestellung im ''Bestellprozess'' fallen. Sollte bei der Bestellung das Restaurant die Bestellung ablehnen, würde dies vereinfacht als Stornierung gekennzeichnet werden. Bei dem ''Zahlungsprozess'' ist diese Möglichkeit der Eskalation auch gegeben, falls der Kunde schon vor der Zubereitung nicht zahlungsfähig ist. Sollte der Kunde vor Ort stornieren, ist dies dann auch eine Option der Eskalation.
+
+Im zweiten Eventsubprozess wird die Zechprellerei behandelt. Das ist ein Fall, der nur bei der letzten Zahlung logisch auftreten kann. Sollte ein Kunde das Essen etwa bereits abgeholt haben oder sogar schon gegessen, dann aber ohne seine Schulden bei dem Restaurant zu begleichen gehen, würde man hierzu eskalieren, und dieses Szenario wird aktuell manuell gehandhabt. Die Ausmodellierung hierfür würde nicht mehr in den Umfang dieser Arbeit passen. 
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+Die hier relevanten Geschäftsobjekte sind einerseits die Bestellung des Kunden und die Rechnung, die er davon bekommt. Andererseits die Restaurant- und Kundeninformationen ''Ausgewähltes Restaurant und Kunde'', weil diese den Lauf des Prozesses maßgeblich beeinflussen. Die Restaurant- und Kundeninformationen sind dabei, wie schon in der Textannotation im Prozess hervorgehoben, nicht mit jeder Call Activity, welche diese Informationen nutzt, verbunden. Das wurde gemacht, um noch eine gewisse Übersichtlichkeit im Modell zu gewährleisten.
+
+Die Bestellung, welche aus dem ''Bestellprozess'' entsteht, wird dabei im Laufe des Prozesses in jeden weiteren Subprozess hineingereicht. Der Zahlungsprozess benötigt diese Informationen, um daraus eine Rechnung zu erstellen, der Zubereitungsprozess, um zu wissen, was er zubereiten soll, und die Abholung, um zu wissen, was wer bestellt hat.
+
+Die aus dem Zahlungsprozess entstandene Rechnung existiert hauptsächlich als Nachweis, spielt aber gerade im Falle der ''Zahlungsrückabwicklung'' bei einer Stornierung eine wichtige funktionale Rolle.
+
+\subsubsection{Bestellprozess}
+In diesem ersten Unterprozess des ''Selbstbedienprozess'' soll der Kunde eine Bestellung aufgeben, welche dann von der Gastronomie angenommen werden kann. 
+
+\paragraphandnewline{Beteiligte Prozessrollen}
+Die Prozessrollen, welche dafür benötigt werden, sind vor allem der Kunde, der hier die Bestellung aufgibt, und voraussichtlich ein Restaurantmitarbeiter. Da das Restaurant auch nur aus einer Person bestehen kann, wird hier einfach für jeden Mitarbeiter, egal welcher Rolle, stellvertretend wieder ''Restaurant'' verwendet. 
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\abbildung{1\textwidth}{img/proc;Selbstbedienungsprozess.png}{iref:Selbestbedienungsprozess}{Toplevel-Prozess für das Selbstbedienungsrestaurant}
-
-Auch hier wird zunächst wieder ausschließlich der Happy Path betrachtet. Direkt zu Beginn des Prozesses wird über eine Call Activity der ''Bestellprozess'' gestartet. In diesem wird vom Kunden verlangt, dass er eine Bestellung aufgibt. 
-
-Im ''Zahlungsprozess'' wird zunächst geprüft, ob es vom Gastronom gewünscht ist, dass hier schon eine Zahlung durchgeführt werden soll. Falls ja, würde hier vom Kunden gezahlt werden, falls nein, würde erst zu einer späteren Stelle gezahlt werden. Anschließend wird die Bestellung an das Restaurant weitergeleitet.
-
-Weiter gehend hat das Restaurant die Aufgabe, sich nun im ''Zubereitungsprozess'' um die Bestellung zu kümmern. Hier kommt der Rollenwechsel entsprechend zum Restaurant, wie man an der Line links erkennen kann. Sobald das Essen fertig ist, wird der Kunde benachrichtigt und der Sequenzfluss weiter in einen ''Zahlungsprozess''. 
-
-Der zweite ''Zahlungsprozess'' ist dort, für den Fall, dass der Gastronom verlangt, dass vor der Abholung zu zahlen ist und nicht schon bei der Bestellung, das kann zum Beispiel notwendig sein, wenn ausschließlich Barzahlung erlaubt ist, aber online bestellt wurde. Der hier ausgeführte Unterprozess soll dabei exakt derselbe sein wie der am Anfang des Prozesses.
-
-In dem darauf folgenden ''Abholungsprozess'' wird der Kunde erneut darüber benachrichtigt, dass er sein Essen jetzt zur Abholung bereitsteht. Nachdem der Kunde das Essen abgeholt hat, kann dieser, sofern er innerhalb des Restaurants isst und er noch nicht zahlen musste, nach dem Essen bezahlen. Das ist die letzte Möglichkeit, für den Gastronomen eine Zahlung zu verlangen.
-
-Nun wird der Ausnahmepfad betrachtet, hier ist festzustellen, dass es 2 Eventsubprozesse gibt. In einem der beiden Eventsubprozesse kann durch ein unterbrechendes Eskalationsstartereignis, welches eine ''Stornierung'' ist, gestartet werden. Der Selbstbedienungsprozess ist abhängig davon, was das Restaurant vorgibt, zu jedem Zeitpunkt stornierbar. Sollte dabei der Kunde schon gezahlt haben, kann es daher notwendig sein, dass eine Zahlungsrückabwicklung stattfinden muss. 
-
-In den ersten beiden Schritten soll der Prozess noch durch einen ''Restaurantwechsel'' abbrechbar sein. Die Abbruchfunktionalität wird über den anderen Eskalationssubprozess gehandhabt. Wenn das unterbrechende Eskalationsstartereignis durch einen ''Restaurantwechsel'' eintrifft, wird, wie im Top-Level-Prozess modelliert, der Kunde  direkt in die Liste der Restaurants zurückhüpfen.
-
-\paragraphandnewline{Beschreibung des Datenflusses}
-Die hier relevanten Geschäftsobjekte sind einerseits die Bestellung des Kunden und die Rechnung, die er davon bekommt. Andererseits die Restaurantinformationen selber, weil diese den Lauf des Prozesses beeinflussen. Die Bestellung entsteht dabei aus dem Bestellprozess und wird im Laufe des Prozesses, als Laufzeitinformation, in jeden weiteren Subprozess hineingereicht. Der Zahlungsprozess benötigt diese Informationen, um eine Rechnung zu erstellen, der Zubereitungsprozess, um zu wissen, was er zubereiten soll, und die Abholung, um zu wissen, wer was bestellt hat.
-
-Die Restaurantinformationen werden dabei über den Top-Level-Prozess hineingegeben und an jeder Stelle verwendet, daher wird vorerst, um eine gewisse Übersichtlichkeit zu gewährleisten, darauf verzichtet, überall die Datenflüsse anzubringen.
-
-\paragraphandnewline{Beteiligte Prozessrollen}
-Die hier beteiligten Prozessrollen sind einerseits das Restaurant und der Kunde. Wie dem Pool und den Lanes zu entnehmen ist, sind alle Aufgaben, bis auf den Zubereitungsprozess, auf Seiten des Kunden. Der Abholungsprozess kann dabei auch Elemente des Restaurantprozesses beinhalten, aber dies lässt sich an dieser Stelle noch nicht festlegen; mehrheitlich wird dieser hier dem Kunden zugeordnet. 
-
-\subsubsection{Bestellprozess}
-\paragraphandnewline{Beteiligte Prozessrollen}
-\paragraphandnewline{Visualisierung des Prozessflusses}
 \abbildung{1\textwidth}{img/proc;Bestellprozess.png}{iref:Bestellprozess}{Bestellprozess}
 
+Nachdem hier eine Bestellung notwendig wurde ist der Kunde gleich am Anfang benötigt. Dieser soll eine
 
+\paragraphandnewline{Beschreibung des Datenflusses}
 
 \subsubsection{Zahlungsprozess}
 Der nächste Prozess, der im Selbstbedienungsprozess gezeigt wird, ist der Zahlungsprozess. Der am meisten referenzierten Prozesse kommt diesem eine ganz besondere Bedeutung zu. Sollte hier im Nachhinein etwas geändert werden, kann es dazu führen, dass die anderen Prozesse gleich an mehreren Stellen auseinanderbrechen. Daher ist es ebenfalls wichtig, dass bei zukünftigen Änderungen dieser Prozesse auch alle anderen ausführlich getestet werden.
