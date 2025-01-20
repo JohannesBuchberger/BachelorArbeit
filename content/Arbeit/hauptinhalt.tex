@@ -431,47 +431,122 @@ Die hier relevanten Geschäftsobjekte sind einerseits die Bestellung des Kunden 
 
 Die Bestellung, welche aus dem ''Bestellprozess'' entsteht, wird dabei im Laufe des Prozesses in jeden weiteren Subprozess hineingereicht. Der Zahlungsprozess benötigt diese Informationen, um daraus eine Rechnung zu erstellen, der Zubereitungsprozess, um zu wissen, was er zubereiten soll, und die Abholung, um zu wissen, was wer bestellt hat.
 
-Die aus dem Zahlungsprozess entstandene Rechnung existiert hauptsächlich als Nachweis, spielt aber gerade im Falle der ''Zahlungsrückabwicklung'' bei einer Stornierung eine wichtige funktionale Rolle.
+Die aus dem Zahlungsprozess entstandene Rechnung existiert hauptsächlich als Nachweis, spielt aber gerade im Falle der ''Zahlungsrückabwicklung'' bei einer Stornierung eine wichtige funktionale Rolle. Die Rechnung kann dabei auch aus dem Bestellprozess entstehen, falls das Restaurant nur auch schon bezahlte Bestellungen entgegennehmen will.
 
 \subsubsection{Bestellprozess}
 In diesem ersten Unterprozess des ''Selbstbedienprozess'' soll der Kunde eine Bestellung aufgeben, welche dann von der Gastronomie angenommen werden kann. 
 
 \paragraphandnewline{Beteiligte Prozessrollen}
-Die Prozessrollen, welche dafür benötigt werden, sind vor allem der Kunde, der hier die Bestellung aufgibt, und voraussichtlich ein Restaurantmitarbeiter. Da das Restaurant auch nur aus einer Person bestehen kann, wird hier einfach für jeden Mitarbeiter, egal welcher Rolle, stellvertretend wieder ''Restaurant'' verwendet. 
+Die Prozessrollen, welche dafür benötigt werden, sind vor allem der Kunde, der hier die Bestellung aufgibt, und voraussichtlich auch  ein Restaurantmitarbeiter, welcher dazu befugt ist, Bestellungen anzunehmen. Da das Restaurant auch nur aus einer Person bestehen kann, ist anzumerken, dass diese Person auch mehrere Rollen erfüllen kann.
 
 \clearpage
 \paragraphandnewline{Visualisierung des Prozessflusses}
 \abbildung{1\textwidth}{img/proc;Bestellprozess.png}{iref:Bestellprozess}{Bestellprozess}
 
-Nachdem hier eine Bestellung notwendig wurde ist der Kunde gleich am Anfang benötigt. Dieser soll eine
+
+Nachdem hier durch den Kunden eine Bestellung aufgegeben wurde und dieser nochmal bestätigt hat, dass er mit dieser auch zufrieden ist, muss das ''Bestellungsannehmenderestaurantpersonal'' diese Bestellung auch annehmen. Dabei kann das Restaurant prüfen, ob die Bestellung auch Sinn ergibt und ob die notwendigen Zutaten noch ausreichend vorhanden sind. Das wird in den ersten beiden User Tasks ''Bestellung aufgeben und bestätigen'' sowie ''Bestellung sichten'' gemacht. Alternativ kann das Restaurant auch eine Zahlung voraussetzen, sodass eine Bestellung gar nicht erst vom Restaurant gesichtet werden muss, sofern keine Zahlung erfolgt ist. Das würde über den zwischen den beiden User Tasks eingeschobenen ''Zahlungsprozess'' geschehen.
+
+Sollte das Restaurantpersonal die Bestellung dabei angenommen haben, wird eine Nachricht an den Kunden zurückgeschickt.  Der Kunde wird dann darüber informiert, dass die Bestellung angenommen worden ist. Der Prozess endet daraufhin im Endevent ''Bestellung durchgeführt''. Die Auswertung der Entscheidung, ob die Bestellungsannahme überhaupt erfolgt ist, erfolgt durch das exklusive OR Gateway ''Bestellung angenommen?''. Sollte die Bestellung dabei abgelehnt werden, wird die Bestellung direkt nach dem Absenden der Benachrichtigung über die Sende-Task ''Ablehnung Kunden zustellen'' zugestellt. Anschließend wird diese auch storniert.
+
+Es gibt zusätzlich dazu noch folgende Ausnahmesituationen. Sollte das Restaurant bei der ''Bestellung sichten'' innerhalb einer vom Restaurant festgelegten Zeit nicht antworten, wird durch den ''Bestellung ausgelaufen'' Timer die ''Bestellungsabbruch Kunden zustellen'' Sende-Task ausgelöst. Der Kunde wird daraufhin informiert, dass das Restaurant die Bestellung nicht angenommen hat und diese daher storniert wird. Dies geschieht über die ''Bestellungsabbruch Kunden zustellen'' Sende-Task.
+
+Ebenso kann das Restaurant über andere Kommunikationswege, wie zum Beispiel einen Anruf, eine E-Mail oder eine App, über eine Stornierung der Bestellung informiert werden. Die Bestätigung darüber wird dem Kunden über die ‘‘Stornierung Kunden zustellen’’ Sende-Task übermittelt.
 
 \paragraphandnewline{Beschreibung des Datenflusses}
+Die hier relevanten Geschäftsobjekte sind das ''Ausgewählte Restaurant und Kunde'' welches wie immer nicht explizit gekennzeichnet ist. Die ''Bestellung'' und optional eine ''Rechnung''. Nachdem der Kunde eine Bestellung aufgegeben hat, wird durch die Informationen im ausgewählten Restaurant geprüft, ob eine Zahlung an dieser Stelle im Prozess überhaupt vorausgesetzt wird. Sollte dies der Fall sein, wird über die Bestellung der Kunde zum Zahlen aufgefordert und eine Rechnung entsteht. Diese ist für den restlichen Prozess nicht mehr von Relevanz und wird daher einfach an den Top-Level-Prozess übergeben. Die Bestellung wiederum wird in allen anderen Prozessschritten weiterhin genutzt.
 
 \subsubsection{Zahlungsprozess}
-Der nächste Prozess, der im Selbstbedienungsprozess gezeigt wird, ist der Zahlungsprozess. Der am meisten referenzierten Prozesse kommt diesem eine ganz besondere Bedeutung zu. Sollte hier im Nachhinein etwas geändert werden, kann es dazu führen, dass die anderen Prozesse gleich an mehreren Stellen auseinanderbrechen. Daher ist es ebenfalls wichtig, dass bei zukünftigen Änderungen dieser Prozesse auch alle anderen ausführlich getestet werden.
+Der nächste Prozess, der im ''Selbstbedienungsprozess'' und auch im ''Bestellprozess'' gezeigt wird, ist der Zahlungsprozess. Der damit am meisten referenzierte Prozess kommt daher eine ganz besondere Bedeutung zu. Sollte hier im Nachhinein etwas geändert werden, kann es dazu führen, dass der Gesamtprozess gleich an mehreren Stellen auseinanderbricht. Daher ist es ebenfalls wichtig, dass bei allen zukünftigen Änderungen dieses Prozesses auch alle anderen ausführlich getestet werden.
 
-Im Zahlungsprozess soll durch eine Bestellung, beziehungsweise eine Liste aus zu zahlenden Objekten eine Rechnung erstellt werden. Dort kann z.B. auch Trinkgeld 
+Die Voraussetzung dafür, den ''Zahlungsprozess'' starten zu können, ist dabei lediglich eine Bestellung, beziehungsweise eine Liste aus zu zahlenden Objekten, damit daraus eine Rechnung erstellt werden kann. An dieser Stelle kann z.B. auch Trinkgeld als Teil der Bestellung übergeben werden. 
 
 \paragraphandnewline{Beteiligte Prozessrollen}
+Die einzige hier existierende Prozessrolle ist der Kunde. Alle vom Restaurant zu erledigenden Schritte werden automatisch abgewickelt oder sind von einem externen Dienstleister zu erledigen.
+
 \paragraphandnewline{Visualisierung des Prozessflusses}
-\clearpage
 \abbildung{1\textwidth}{img/proc;Zahlungsprozess.png}{iref:Zahlungsprozess}{Zahlungsprozess}
 
-\abbildung{1\textwidth}{img/proc;Zahlungsvorbereitungsprozess.png}{iref:Zahlungsvorbereitungsprozess}{Zahlungsvorbereitungsprozess}
+
+Bevor der Zahlungsprozess starten kann, müssen gewisse Entscheidungen getroffen werden. Zunächst muss die Zahlungsnotwendigkeit festgestellt werden. Das ist auch schon im Startereignis durch ''Zahlungsnotwendigkeit prüfen'' vermerkt. Diese Entscheidung wird in dem Unterprozess ''Zahlungsvorbereitungsprozess'' getroffen.
+
+Die vier Fälle die im ''Zahlungsvorbereitungsprozess'' festgestellt werden können, sind wie folgt. Im Falle von ''Keine Zahlung notwendig'' ist aus Sicht des Restaurants an dieser Stelle noch keine Zahlung  gewünscht. Daher würde in diesem Fall der Zahlungsprozess beendet werden.
+
+In dem Fall ''Manuelle Zahlung notwendig'' würde vom Restaurant erwartet werden, dass der Kunde vor Ort an der Kasse entweder mit Bargeld oder Karte seine Zahlung durchführt. Sobald dies erfolgt ist, endet auch hier der Zahlungsprozess.
+
+Im Fall von ''Zahlung bereits durchgeführt'' wurde festgestellt, dass bei einem früheren Zahlungsprozess eine Zahlung durchgeführt wurde und keine neue notwendig ist.
+
+''Automatische Zahlung möglich'' bedeutet, dass vom Kunden bereits seine Zahlungsmethoden hinterlegt wurden. Dadurch können seine Zahlungen automatisch durchgeführt werden, ohne dass der Kunde etwas machen muss. ''Automatische Zahlungsanfrage schicken'' würde demnach eine Nachricht über einen Message Broker an einen Service schicken, der die Nachricht konsumiert. Der für die Zahlung zuständige Service würde selber wiederum einen externen Dienstleister darüber benachrichtigen, dass er eine Zahlung durchführen will. Sobald die technischen Details dazu abgearbeitet worden sind, schickt der Service eine Nachricht zurück zu dem Message Broker. Dort konsumiert dann die Prozess Engine die Nachricht und korreliert diese mit dieser Zahlungsprozessinstanz. Was genau ein Message Broker ist, wird in \fullref{sec:technologie_prozesse} \todo{Confirm ob Message Broker erklärt}. Je nachdem, was zuerst zutrifft, entscheidet sich das Eventbased Gateway für ''Nichtausführung empfangen'', ''Zahlungszeitraum ausgelaufen'' oder ''Zahlungsinformationen empfangen''.  Nachdem die erfolgreiche Meldung der Zahlung durch den externen Dienstleister erfolgt ist, endet der Prozess in ''Zahlung durchgeführt''.
+
+Sollte der externe Zahlungsdienstleister, aus welchen Gründen auch immer, die Zahlung ablehnen, wird die Prozess Engine den Weg der ''Nichtausführung empfangen'' einschlagen. Dieser Weg deckt sich mit dem Timer-Event ''Zahlungszeitraum ausgelaufen''. Hier wird vorausgesetzt, dass der externe Zahlungsdienstleister die Zahlung innerhalb von einer Minute beantwortet. Sollte dann über ''Bestellungsstatus prüfen'' festgestellt werden, das die Bestellung schon abgeholt wurde, obwohl eine Zahlung notwendig war, müssen von den Mitarbeitern manuelle Schritte eingeleitet werden. Wie diese aussehen wird zusammenfassend im Top-Level-Prozess beschrieben. Sollte die Bestellung noch nicht abgeholt worden sein, wird vereinfacht davon ausgegangen, das wir uns noch vor der Bestellungsannahme durch das Restaurant befinden, und der Kunde keine Interesse hat, die Bestellung wirklich abzugeben. Daher wird die Bestellung storniert. 
 
 \paragraphandnewline{Beschreibung des Datenflusses}
+Die Bestellung, die notwendig ist um den Prozess zu starten, sowie auch die nicht explizit gekennzeichneten Geschäftsobjekte des Restaurants und Kunden werden alle in die Call Activity des ''Zahlungsvorbereitungsprozess'' gegeben. Dieser gibt dann, sofern es für den Verlauf des restlichen Prozesses von relevanz ist, die Rechnung zurück. 
+
+\clearpage
+\paragraphandnewline{Visualisierung Zahlungsvorbereitungsprozess}
+Da der Zahlungsvorbereitungsprozess so integraler Bestandteil des Zahlungsprozesses ist, wird dieser im selben Kapitel ausgestaltet, wie hier zu sehen ist.
+
+\abbildung{1\textwidth}{img/proc;Zahlungsvorbereitungsprozess.png}{iref:Zahlungsvorbereitungsprozess}{Zahlungsvorbereitungsprozess}
+Hier wird in der Service Task ''Zahlungsnotwendigkeit prüfen'', welche als erstes Ansteht, zuerst geprüft. Sollte es sich herausstellen, dass von dem Restaurant, an dieser Stelle keine Zahlung gewollt ist, beendet sich der Prozess mit dem entsprechenden ''Keine Zahlung notwendig'' Endevent. Selbes entsprechend für den Fall, das eine Zahlung bereits durchgeführt wurde mit dem ''Zahlung bereits durchgeführt'' Endevent.
+
+In dem Scenario, wo eine Zahlung allerdings notwendig ist, wird zunächst in der ''Accountexistenz und Accountnotwendigkeit prüfen'' geprüft, ob überhaupt eine Notwendigkeit dafür besteht einen Account zu besitzten. Sollte nämlich das Restaurant nur vor Ort Zahlungen entgegennehmen ist ein Account wo die digitalen Informationen über eine Person gespeichert werden nicht notwendig. Sollte allerdings eine Onlinezahlung entgegengenommen werden, ist es nur von Vorteil diese Informationen zu speichern. Auch weil hier die Zahlungsinformationen dabei sind, welche im späteren Schritt eine automatische Zahlung erlauben.
+
+Sollte also entsprechend ein Account notwendig sein, und keiner bereits existieren, wird nun der Kunde dazu aufgefordert diese zur Verfügung zu stellen. Sobald die Rechnung dann durch die Service Task ''Rechnung erstellen und speichern'' erstellt ist und in einem extra Service dafür auch außerhalb der Prozess Instanz für jegliche Rückfragen gespeichert wurde, kommt es zur letzten Prüfung. Jetzt wird in der Service Task  ''Automatische Zahlungsmöglichkeiten prüfen'' ermittelt, ob durch die Kunden- und Zahlungsinformationsangaben eine automatische Zahlung ermöglicht wird. Je nachdem wird der Hilfsprozess entsprechend mit ''Automatische Zahlung möglich'' oder ''Manuelle Zahlung notwendig'' beendet.
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+Die Bestellung sowie die Informationen über das ausgewählte Restaurant und Kunde sind auch hier wieder relevant. Gerade das ausgewählte Restaurant enthält die Informationen darüber, ob die Account existenz notwendig ist oder automatische Zahlungen erlaubt sind. Die optional vorhandenen Kundeninformationen werden dabei entsprechend, falls die Aktivität ''Kunden- und Zahlungsinformationen eintragen'' durchgeführt wird, um die entsprechenden Informationen ergänzt.
 
 \subsubsection{Zubereitungsprozess}
-\clearpage
-\abbildung{1\textwidth}{img/proc;Zubereitungsprozess.png}{iref:Zubereitungsprozess}{Zubereitungsprozess}
+Der Zubereitungsprozess in dem der Koch das Essen zubereitet, ist der dritte Prozessschritt im Selbstbedienprozess. Dieser Prozess könnte zwar detaillierter modelliert werden, allerdings soll bei der konkreten Ausgestaltung dem jeweiligen Koch möglichst viel Freiraum gelassen werden. Daher ist der Prozessschritt verhältnismäßig klein gestaltet.
+
+Dieser Prozess soll nur Startbar sein, wenn falls eine Bestellung hineingegeben wird.
+
+\paragraphandnewline{Beteiligte Prozessrollen}
+In diesem Prozess ist nur der Koch relevant, beziehungsweise die Person, die diese Rolle innehat. Im Falle eines Einpersonen Restaurants hätte eine Person ja alle Rollen inne.
+
+\paragraphandnewline{Visualisierung Zahlungsvorbereitungsprozess}
+\abbildung{0.9\textwidth}{img/proc;Zubereitungsprozess.png}{iref:Zubereitungsprozess}{Zubereitungsprozess}
+
+
+Sobald hier durch den Koch eine ''Zubereitung notwendig'' ist, wird eine Bestellung in den Prozess gegeben. Diese wird dann in einer Manual-Task vom Koch die Bestellung bearbeitet. Sobald der Koch fertig ist mit der Bearbeitung der Bestellung wird in der Send-Task ''Bestellungsbearbeitungsabschluss senden'' über den Message Broker an einen Services eine Nachricht geschickt. Sobald dieser die Nachricht konsumiert schickt dieser an den Kunden eine Meldung. Das kann dabei entweder eine SMS, eine Push-Notification auf der APP oder sonstiges anderes sein. Wie genau der Kunde benachrichtigt wird, sind technische Details. Daraufhin wird der Prozess als abgeschlossen betrachtet.
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+Die hier relevanten Informationen sind die Bestellung, und Kunde. Der Kunde wird wie immer im Modell nicht extra hervorgehoben. 
+
+Die Bestellung wird, nachdem diese hereingegeben wurde und in der Manuel-Task ''Besttellung bearbeiten'' zubereitet wurde, an die Send-Task weitergegeben. Hier wird zusammen werden dann Informationen aus der Bestellung und dem Kunden verwendet, um dem Kunden die ''Bestellungsbearbeitungsabschluss'' zu senden.
 
 \subsubsection{Abholungsprozess}
+Der letzte im Hauptpfad relevante neue Prozess, benötigt wie seine Vorgänger zum starten eine Bestellung. Nach diesem Prozess kommt noch eine letzte Möglichkeit für den Kunden zu zahlen.
+
+
+\paragraphandnewline{Beteiligte Prozessrollen}
+Hier sind die relevanten Rollen wieder zwei, der Kunde und das Restaurant. Das Restaurant steht an dieser Stelle für den Mitarbeiter oder Zuständigen, der das Essen ausgibt, oder bereitstellt.
+
 \clearpage
+\paragraphandnewline{Visualisierung Zahlungsvorbereitungsprozess}
 \abbildung{1\textwidth}{img/proc;Abholungsprozess.png}{iref:Abholungsprozess}{Abholungsprozess}
 
+
+Hat der Kunde, als er die Bestellung aufgegeben hat, den Wunsch geäußert, dass er die Bestellung mit nach Hause nehmen will, so wird diese Information im ersten Prozessschritt, dem ''Mitnahmewunsch prüfen'' ausfindig gemacht. Das darauf folgende ''Verpacken notwendig?'' Gateway folgt dem Ergebnis entsprechend und trägt damit, im Falle einer Mitnahme, dem Restaurantmitarbeiter auf, das Essen zu verpacken. Abgebildet hier durch eine Manual-Task ''Essen verpacken''.
+
+Nachdem dies abgeschlossen ist, wird der Mitarbeiter dazu aufgefordert, das Essen auf der Theke oder am entsprechenden Übergabeort dem Kunden bereitzustellen.
+
+Sobald dies geschehen ist, werden zwei Sachen gleichzeitig gemacht. Erstens wird dem Kunden über die Send-Task ''Essensabholbenachrichtigung senden'', wie auch schon zuvor durch den Message Broker eine Nachricht geschickt. Gleichzeitig wird parallel die Manual-Task ''Essen abholen'' für den Kunden erstellt. Sollte der Kunde dies übersehen, wird zur Erinnerung alle 3 Minuten eine weitere Nachricht versendet. Diese Nachricht kann dann zum Beispiel je nach konkreter technischer Implementierung über eine SMS an den Kunden gesendet werden, per Anruf, als Vibration über eine App und so weiter.
+
+Sobald der Kunde das Essen abgeholt hat, endet der Prozess in dem Endereignis ''Abholung durchgeführt''. Sollte der Kunde allerdings das Essen nicht innerhalb von 15 Minuten abholen, muss sich ein Restaurantmitarbeiter manuell um das weitere Vorgehen kümmern. Daraufhin endet der Prozess ebenfalls.
+
+\paragraphandnewline{Beschreibung des Datenflusses}
+Die hier durch den Top-Level-Prozess gegebene Bestellung und Kunde ist alles, was benötigt wird. Die Bestellung wird bei der ersten Service-Task benötigt, um den ''Mitnahmewunsch'' zu prüfen. Bei den restlichen Aktivitäten liegt die Bestellung nur als Information bei. 
+
+Die Kundeninformationen werden wiederum bei der ''Essensabholbesnachrichtigung senden'' benötigt, da hier der zuzustellende Kunde relevant ist.
+
 \subsubsection{Zahlungsrückabwicklungsprozess}
+\paragraphandnewline{Beteiligte Prozessrollen}
 \clearpage
+\paragraphandnewline{Visualisierung Zahlungsrückabwicklungsprozess}
 \abbildung{1\textwidth}{img/proc;Zahlungsrückabwicklungsprozess.png}{iref:Zahlungsrückabwicklungsprozess}{Zahlungsrückabwicklungsprozess}
+
+\paragraphandnewline{Beschreibung des Datenflusses}
 
 % =================================
 % = Main Process
@@ -488,11 +563,9 @@ Die Person, die in diesem Prozess konkret Aufgaben übernehmen kann, ist diejeni
 \paragraphandnewline{Visualisierung des Prozessflusses}
 \abbildung{1\textwidth}{img/proc;SpeisekartenEditierProzess.png}{iref:Speisekarteneditierprozess}{Speisekarteneditierprozess}
 
-\paragraphandnewline{Detailinformationen zu den Prozessschritten}
 Hierbei wird sich an der 
 
-
-\paragraphandnewline{Beschreibung des Prozesskontexts}
+\paragraphandnewline{Beschreibung des Datenflusses}
 Was passiert mit den Prozessdaten,  Klassendiagramm!
 
 \section{Technologische Umsetzung der Prozesse}
